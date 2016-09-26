@@ -34,7 +34,7 @@
                 for (int i = 0; i < u.Children.Count; i++)
                 {
                     IEdge<T> e = u.Children[i];
-                    
+
                     if (e.Node.Distance > u.Distance + e.Cost)
                     {
                         q.Remove(e.Node);
