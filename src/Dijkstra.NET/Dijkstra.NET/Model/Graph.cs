@@ -5,10 +5,9 @@
     using System.Collections.Generic;
     using System.Linq;
     using Contract;
-    public class Graph<T>: IGraph<T>, ICloneable
+    public class Graph<T, TEdgeCustom>: IGraph<T, TEdgeCustom>, ICloneable where TEdgeCustom: class 
     {
-        private readonly IDictionary<uint, INode<T>> _nodes = new Dictionary<uint, INode<T>>();
-
+        private readonly IDictionary<uint, INode<T, TEdgeCustom>> _nodes = new Dictionary<uint, INode<T, TEdgeCustom>>();
 
         public void AddNode(T item)
         {
@@ -21,19 +20,19 @@
             if (_nodes.ContainsKey(key))
                 throw new InvalidOperationException("Node have to be unique.", new Exception("The same key of node."));
 
-            _nodes.Add(key, new Node<T>(key, item));
+            _nodes.Add(key, new Node<T, TEdgeCustom>(key, item));
         }
 
-        public bool Connect(uint from, uint to, uint cost)
+        public bool Connect(uint from, uint to, uint cost, TEdgeCustom custom)
         {
             if (!_nodes.ContainsKey(from) || !_nodes.ContainsKey(to))
                 return false;
 
-            INode<T> nodeFrom = this[from];
-            INode<T> nodeTo = this[to];
+            INode<T,TEdgeCustom> nodeFrom = this[from];
+            INode<T, TEdgeCustom> nodeTo = this[to];
 
-            nodeFrom.Children.Add(new Edge<T>(nodeTo, cost));
-            nodeTo.Parents.Add(new Edge<T>(nodeFrom, cost));
+            nodeFrom.Children.Add(new Edge<T, TEdgeCustom>(nodeTo, cost, custom));
+            nodeTo.Parents.Add(new Edge<T, TEdgeCustom>(nodeFrom, cost, custom));
 
             return true;
         }
@@ -49,10 +48,10 @@
 
         public bool HasToBeReset() => this.Any(x => x.Distance != UInt32.MaxValue);
 
-        public IEnumerator<INode<T>> GetEnumerator() => _nodes.Select(x => x.Value).GetEnumerator();
+        public IEnumerator<INode<T, TEdgeCustom>> GetEnumerator() => _nodes.Select(x => x.Value).GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public INode<T> this[uint node] => _nodes[node];
+        public INode<T, TEdgeCustom> this[uint node] => _nodes[node];
 
 
         /// <summary>
@@ -61,7 +60,7 @@
         /// <returns></returns>
         public object Clone()
         {
-            var graph = new Graph<T>();
+            var graph = new Graph<T, TEdgeCustom>();
 
             foreach (var node in _nodes.Values)
                 graph.AddNode(node.Key, node.Item);
@@ -69,7 +68,7 @@
             foreach (var node in _nodes.Values.Where(x => x.Children.Count > 0))
             {
                 foreach (var edge in node.Children)
-                    graph.Connect(node.Key, edge.Node.Key, edge.Cost);
+                    graph.Connect(node.Key, edge.Node.Key, edge.Cost, edge.Item);
             }
 
             return graph;

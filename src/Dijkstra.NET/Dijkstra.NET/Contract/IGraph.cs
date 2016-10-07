@@ -2,8 +2,8 @@
 {
     using System.Collections.Generic;
 
-    public interface IGraph<T>: IEnumerable<INode<T>>
+    public interface IGraph<T, TEdgeCustom> : IEnumerable<INode<T, TEdgeCustom>> where TEdgeCustom: class
     {
-        INode<T> this[uint node] { get; }
+        INode<T, TEdgeCustom> this[uint node] { get; }
     }
 }

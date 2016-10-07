@@ -1,12 +1,11 @@
-﻿using System;
-
-namespace Dijkstra.NET.Benchmark
+﻿namespace Dijkstra.NET.Benchmark
 {
+    using System;
     using Model;
 
     public class DijkstraBenchmarkBase
     {
-        protected readonly Graph<int> _graph = new Graph<int>();
+        protected readonly Graph<int, string> _graph = new Graph<int, string>();
 
         private const int Nodes = 1000000;
         private const int Connections = 10000000;
@@ -27,7 +26,7 @@ namespace Dijkstra.NET.Benchmark
                 int node2 = random.Next(1, Nodes);
                 int cost = random.Next(1, 50);
 
-                _graph.Connect((uint) node1, (uint) node2, (uint) cost);
+                _graph.Connect((uint) node1, (uint) node2, (uint) cost, null);
             }
 
             @from = (uint) random.Next(0, Nodes-1);

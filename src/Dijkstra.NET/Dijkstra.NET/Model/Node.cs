@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using Contract;
-    public class Node<T>: INode<T>
+    public class Node<T, TEdgeCustom>: INode<T, TEdgeCustom> where TEdgeCustom: class
     {
         public Node(uint key, T item)
         {
@@ -11,10 +11,8 @@
             Item = item;
         }
 
-
-
-        public IList<IEdge<T>> Children { get; } = new List<IEdge<T>>();
-        public IList<IEdge<T>> Parents { get; } = new List<IEdge<T>>();
+        public IList<Edge<T, TEdgeCustom>> Children { get; } = new List<Edge<T, TEdgeCustom>>();
+        public IList<Edge<T, TEdgeCustom>> Parents { get; } = new List<Edge<T, TEdgeCustom>>();
         public uint Key { get; }
         public T Item { get; }
         public uint Distance { get; set; } = UInt32.MaxValue;

@@ -1,15 +1,17 @@
 ﻿namespace Dijkstra.NET.Model
 {
     using Contract;
-    public class Edge<T>: IEdge<T>
+    public struct Edge<T, TCustom> where TCustom: class 
     {
-        public Edge(INode<T> node, uint cost)
+        public Edge(INode<T, TCustom> node, uint cost, TCustom custom)
         {
             Node = node;
             Cost = cost;
+            Item = custom;
         }
 
-        public INode<T> Node { get; }
+        public INode<T, TCustom> Node { get; }
         public uint Cost { get; }
+        public TCustom Item { get; }
     }
 }
