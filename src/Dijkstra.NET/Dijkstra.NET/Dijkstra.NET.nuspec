@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Dijkstra.NET</id>
+    <version>1.0.0</version>
+    <authors>Mateusz Mazurek</authors>
+    <description>High performance the shortest path in directed graph with non negative weights algorithm implementation.</description>
+    <language>en-US</language>
+    <projectUrl>https://github.com/matiii/Dijkstra.NET</projectUrl>
+    <licenseUrl>https://github.com/matiii/Dijkstra.NET/blob/master/LICENSE</licenseUrl>
+  </metadata>
+</package>
