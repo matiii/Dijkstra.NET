@@ -12,7 +12,6 @@
         }
 
         public IList<Edge<T, TEdgeCustom>> Children { get; } = new List<Edge<T, TEdgeCustom>>();
-        public IList<Edge<T, TEdgeCustom>> Parents { get; } = new List<Edge<T, TEdgeCustom>>();
         public uint Key { get; }
         public T Item { get; }
         public uint Distance { get; set; } = UInt32.MaxValue;

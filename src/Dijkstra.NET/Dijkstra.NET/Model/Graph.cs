@@ -32,7 +32,6 @@
             INode<T, TEdgeCustom> nodeTo = this[to];
 
             nodeFrom.Children.Add(new Edge<T, TEdgeCustom>(nodeTo, cost, custom));
-            nodeTo.Parents.Add(new Edge<T, TEdgeCustom>(nodeFrom, cost, custom));
 
             return true;
         }
