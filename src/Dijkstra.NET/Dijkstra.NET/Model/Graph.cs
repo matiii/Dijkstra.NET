@@ -5,7 +5,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using Contract;
-    public class Graph<T, TEdgeCustom>: IGraph<T, TEdgeCustom>, ICloneable where TEdgeCustom: class 
+    public class Graph<T, TEdgeCustom>: IGraph<T, TEdgeCustom>, IEnumerable<INode<T, TEdgeCustom>>, ICloneable where TEdgeCustom: class 
     {
         private readonly IDictionary<uint, INode<T, TEdgeCustom>> _nodes = new Dictionary<uint, INode<T, TEdgeCustom>>();
 

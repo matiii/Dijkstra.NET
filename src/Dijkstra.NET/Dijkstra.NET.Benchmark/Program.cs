@@ -7,7 +7,7 @@
 
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             var normal = new  DijkstraBenchmark();
             normal.Setup();
@@ -16,7 +16,10 @@
             DijkstraResult result = normal.GetPath();
             stopWatch.Stop();
 
-            Console.WriteLine($"Dijkstra takes {stopWatch.Elapsed.TotalSeconds:F} sec. Length of path is {result.GetPath().Count()}.");
+            uint[] path = result.GetPath().ToArray();
+
+            Console.WriteLine($"Dijkstra takes {stopWatch.ElapsedMilliseconds} ms. Length of path is {path.Length}.");
+            Console.WriteLine($"Path: {path.Select(x => x.ToString()).Aggregate((a, b) => a + " -> " + b)}");
 
             Console.ReadKey();
         }
