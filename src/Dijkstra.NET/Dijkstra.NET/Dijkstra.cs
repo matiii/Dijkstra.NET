@@ -19,7 +19,7 @@
         {
             var result = new DijkstraResult(from, to);
             _graph[from].Distance = 0;
-            var q = new SortedSet<INode<T, TEdgeCustom>>(_graph, new NodeComparer<T, TEdgeCustom>());
+            var q = new SortedSet<INode<T, TEdgeCustom>>(new[] {_graph[from]}, new NodeComparer<T, TEdgeCustom>());
 
             while (q.Count > 0)
             {
@@ -37,7 +37,6 @@
 
                     if (e.Node.Distance > u.Distance + e.Cost)
                     {
-                        q.Remove(e.Node);
                         e.Node.Distance = u.Distance + e.Cost;
                         q.Add(e.Node);
                         result.Path[e.Node.Key] = u.Key;

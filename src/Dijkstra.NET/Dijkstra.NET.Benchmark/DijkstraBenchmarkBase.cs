@@ -29,8 +29,19 @@
                 _graph.Connect((uint) node1, (uint) node2, (uint) cost, null);
             }
 
-            @from = (uint) random.Next(0, Nodes-1);
-            to = (uint) random.Next(0, Nodes-1);
+            _graph.Connect(0, 5, 10, null);
+            _graph.Connect(5, 121, 2, null);
+            _graph.Connect(121, 115, 1, null);
+            _graph.Connect(115, 300, 4, null);
+            _graph.Connect(300, 855, 2, null);
+            _graph.Connect(855, 1600, 1, null);
+            _graph.Connect(1600, 5000, 4, null);
+            _graph.Connect(5000, 50, 1, null);
+            _graph.Connect(50, 21, 1, null);
+            _graph.Connect(21, Nodes-1, 1, null);
+
+            @from = 0;
+            to = Nodes-1;
         }
     }
 }
