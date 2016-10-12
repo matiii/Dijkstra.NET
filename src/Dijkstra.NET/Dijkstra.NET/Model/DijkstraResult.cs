@@ -19,7 +19,7 @@
 
         public uint Distance { get; set; }
         public Dictionary<uint, uint> Path { get; }
-
+        public bool IsFounded => Distance != UInt32.MaxValue;
         public IEnumerable<uint> GetReversePath()
         {
             uint result = _to;
