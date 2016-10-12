@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Dijkstra.NET</id>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <authors>Mateusz Mazurek</authors>
     <title>Dijkstra.NET</title>
     <description>High performance the shortest path in directed graph with non negative weights algorithm implementation.</description>

@@ -15,6 +15,12 @@
             _graph = graph;
         }
 
+        /// <summary>
+        /// Get path from @from to @to
+        /// </summary>
+        /// <param name="from">Start node</param>
+        /// <param name="to">End node</param>
+        /// <returns>Value with path</returns>
         public DijkstraResult Process(uint from, uint to)
         {
             var result = new DijkstraResult(from, to);
