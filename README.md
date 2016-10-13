@@ -27,10 +27,6 @@ result.GetPath();
 
 For Graph where number of vertices is 1 000 000 and number of edges is 10 000 000. Benchmark is available on the [benchmark](https://github.com/matiii/Dijkstra.NET/blob/benchmark/src/Dijkstra.NET/Dijkstra.NET.Benchmark/DijkstraBenchmark.cs) branch.
 
-```c#
-
-```
-
 ```ini
 
 Host Process Environment Information:
