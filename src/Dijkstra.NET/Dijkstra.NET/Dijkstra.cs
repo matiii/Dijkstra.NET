@@ -1,12 +1,13 @@
 ﻿namespace Dijkstra.NET
 {
+    using System;
     using System.Collections.Generic;
     using Contract;
     using Extensions;
     using Model;
     using Utility;
 
-    public class Dijkstra<T, TEdgeCustom> where TEdgeCustom: class
+    public class Dijkstra<T, TEdgeCustom> where TEdgeCustom : IEquatable<TEdgeCustom>
     {
         private readonly IGraph<T, TEdgeCustom> _graph;
 

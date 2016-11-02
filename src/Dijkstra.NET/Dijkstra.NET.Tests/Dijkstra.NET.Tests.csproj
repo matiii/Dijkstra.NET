@@ -71,6 +71,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="DijkstraTest.cs" />
+    <Compile Include="EdgeTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

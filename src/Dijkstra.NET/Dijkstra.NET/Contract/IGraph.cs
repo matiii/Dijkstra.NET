@@ -1,8 +1,8 @@
 ﻿namespace Dijkstra.NET.Contract
 {
-    using System.Collections.Generic;
+    using System;
 
-    public interface IGraph<T, TEdgeCustom> where TEdgeCustom: class
+    public interface IGraph<T, TEdgeCustom> where TEdgeCustom : IEquatable<TEdgeCustom>
     {
         INode<T, TEdgeCustom> this[uint node] { get; }
     }

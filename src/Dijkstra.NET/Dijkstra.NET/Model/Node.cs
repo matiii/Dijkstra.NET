@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using Contract;
-    public class Node<T, TEdgeCustom>: INode<T, TEdgeCustom> where TEdgeCustom: class
+    public class Node<T, TEdgeCustom>: INode<T, TEdgeCustom> where TEdgeCustom: IEquatable<TEdgeCustom>
     {
         public Node(uint key, T item)
         {
