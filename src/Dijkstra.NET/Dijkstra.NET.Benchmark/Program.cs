@@ -3,7 +3,7 @@
     using System;
     using System.Diagnostics;
     using System.Linq;
-    using Model;
+    using Contract;
 
     class Program
     {
@@ -13,7 +13,7 @@
             normal.Setup();
 
             var stopWatch = Stopwatch.StartNew(); 
-            DijkstraResult result = normal.GetPath();
+            IShortPathResult result = normal.GetPath();
             stopWatch.Stop();
 
             uint[] path = result.GetPath().ToArray();

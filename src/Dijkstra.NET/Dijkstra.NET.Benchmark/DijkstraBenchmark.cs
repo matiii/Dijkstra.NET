@@ -1,10 +1,11 @@
 ﻿namespace Dijkstra.NET.Benchmark
 {
-    using Model;
+    using Contract;
+    using ShortPath;
 
     public class DijkstraBenchmark: DijkstraBenchmarkBase
     {
-        public DijkstraResult GetPath()
+        public IShortPathResult GetPath()
         {
             var dijkstra = new Dijkstra<int, string>(_graph);
             return dijkstra.Process(@from, to);

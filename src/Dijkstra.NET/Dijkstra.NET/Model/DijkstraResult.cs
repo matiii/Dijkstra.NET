@@ -3,23 +3,28 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Contract;
 
-    public struct DijkstraResult
+    public class DijkstraResult: IShortestPathResult
     {
         private readonly uint _from;
         private readonly uint _to;
+
+        private readonly Dictionary<uint, uint> _path = new Dictionary<uint, uint>();
 
         public DijkstraResult(uint @from, uint to)
         {
             _from = @from;
             _to = to;
-            Distance = UInt32.MaxValue;
-            Path = new Dictionary<uint, uint>();
+            Distance = Int32.MaxValue;
         }
 
-        public uint Distance { get; set; }
-        public Dictionary<uint, uint> Path { get; }
-        public bool IsFounded => Distance != UInt32.MaxValue;
+        public int Distance { get; set; }
+        public uint FromNode => _from;
+        public uint ToNode => _to;
+        public virtual IDictionary<uint, uint> Path => _path;
+        public bool IsFounded => Distance != Int32.MaxValue;
+
         public IEnumerable<uint> GetReversePath()
         {
             uint result = _to;

@@ -1,10 +1,10 @@
-﻿namespace Dijkstra.NET
+﻿namespace Dijkstra.NET.ShortestPath
 {
     using System;
     using System.Collections.Generic;
     using Contract;
     using Extensions;
-    using Model;
+    using NET.Model;
     using Utility;
 
     public class Dijkstra<T, TEdgeCustom> where TEdgeCustom : IEquatable<TEdgeCustom>
@@ -16,13 +16,15 @@
             _graph = graph;
         }
 
+        protected IGraph<T, TEdgeCustom> Graph => _graph;
+
         /// <summary>
         /// Get path from @from to @to
         /// </summary>
         /// <param name="from">Start node</param>
         /// <param name="to">End node</param>
         /// <returns>Value with path</returns>
-        public DijkstraResult Process(uint from, uint to)
+        public virtual IShortestPathResult Process(uint from, uint to)
         {
             var result = new DijkstraResult(from, to);
             _graph[from].Distance = 0;
@@ -34,7 +36,7 @@
 
                 if (u.Key == to)
                 {
-                    result.Distance = u.Distance;
+                    result.Distance = (int) u.Distance;
                     break;
                 }
 
