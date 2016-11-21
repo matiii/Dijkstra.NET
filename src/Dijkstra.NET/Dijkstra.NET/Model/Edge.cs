@@ -5,7 +5,7 @@
     using Contract;
     public struct Edge<T, TCustom>: IEquatable<Edge<T, TCustom>> where TCustom: IEquatable<TCustom>
     {
-        public Edge(INode<T, TCustom> node, uint cost, TCustom custom)
+        public Edge(INode<T, TCustom> node, int cost, TCustom custom)
         {
             Node = node;
             Cost = cost;
@@ -13,7 +13,7 @@
         }
 
         public INode<T, TCustom> Node { get; }
-        public uint Cost { get; }
+        public int Cost { get; }
         public TCustom Item { get; }
 
         public bool Equals(Edge<T, TCustom> other) => Node.Key == other.Node.Key && Cost == other.Cost &&

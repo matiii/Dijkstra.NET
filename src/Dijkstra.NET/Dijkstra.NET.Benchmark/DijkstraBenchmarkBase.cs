@@ -26,7 +26,7 @@
                 int node2 = random.Next(1, Nodes);
                 int cost = random.Next(1, 50);
 
-                _graph.Connect((uint) node1, (uint) node2, (uint) cost, null);
+                _graph.Connect((uint) node1, (uint) node2,  cost, null);
             }
 
             _graph.Connect(0, 5, 10, null);

@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public interface IShortPathResult
+    public interface IShortestPathResult
     {
         IEnumerable<uint> GetReversePath();
         IEnumerable<uint> GetPath();

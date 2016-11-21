@@ -1,32 +1,33 @@
 ﻿namespace Dijkstra.NET.ShortestPath
 {
     using System;
-    using System.Collections.Concurrent;
-    using System.Linq;
+    using System.Threading;
     using System.Threading.Tasks;
     using Contract;
     using Model;
     using NET.Model;
+    using Utility;
 
-    public class DijkstraParallel<T, TEdgeCustom>: Dijkstra<T, TEdgeCustom> where TEdgeCustom: IEquatable<TEdgeCustom>
+    public class DijkstraParallel<T, TEdgeCustom> : Dijkstra<T, TEdgeCustom> where TEdgeCustom : IEquatable<TEdgeCustom>
     {
-        private readonly BlockingCollection<INode<T, TEdgeCustom>> _mapper = new BlockingCollection<INode<T, TEdgeCustom>>(new ConcurrentBag<INode<T, TEdgeCustom>>()); //todo: concern collection
-        private readonly BlockingCollection<MapReduceJob> _reducer = new BlockingCollection<MapReduceJob>(new ConcurrentBag<MapReduceJob>());
+        private readonly ProducerConsumer<T, TEdgeCustom> _table;
+        private readonly IConcurrentGraph<T, TEdgeCustom> _graph;
+
         private DijkstraConcurrentResult _result;
 
-
-        public DijkstraParallel(IGraph<T, TEdgeCustom> graph) : base(graph)
+        public DijkstraParallel(IConcurrentGraph<T, TEdgeCustom> graph) : base(graph)
         {
+            _graph = graph;
+            _table = new ProducerConsumer<T, TEdgeCustom>();
         }
 
         public override IShortestPathResult Process(uint @from, uint to)
         {
             _result = new DijkstraConcurrentResult(from, to);
 
-            INode<T, TEdgeCustom> node = Graph[from];
+            IConcurrentNode<T, TEdgeCustom> node = _graph.GetConccurentNode(from);
             node.Distance = 0;
-
-            _mapper.Add(node);
+            _table.Produce(node);
 
             var map = new Task(Map);
             var reduce = new Task(Reduce);
@@ -41,29 +42,49 @@
 
         private void Map()
         {
-            Parallel.ForEach(_mapper.GetConsumingEnumerable(), node =>
+            _table.Producing(node =>
             {
-                node.Children.GroupBy(x => x.Node.Key).Select(x => x.First(n => n.Cost == x.Min(z => z.Cost)));
-
-                for (int i = 0; i < node.Children.Count; i++)
+                if (node.Key != _result.ToNode)
                 {
-                    Edge<T, TEdgeCustom> e = node.Children[i];
-                    _reducer.Add(new MapReduceJob(node.Key, e.Node.Key, (int) node.Distance, (int) e.Cost));
+                    for (int i = 0; i < node.Children.Count; i++)
+                    {
+                        Edge<T, TEdgeCustom> e = node.Children[i];
+                        _table.Consume(new MapReduceJob(node.Key, e.Node.Key, node.Distance, e.Cost));
+                    }
                 }
             });
         }
 
         private void Reduce()
         {
-            Parallel.ForEach(_reducer.GetConsumingEnumerable(), job =>
+            _table.Consuming(job =>
             {
-                if (Graph[job.To].Distance > job.Distance)
+                if (Reduce(_graph.GetConccurentNode(job.To), job.Distance))
                 {
-                    Graph[job.To].Distance = (uint) job.Distance;
-                    _result.Path[job.To] = job.From;
-                    _mapper.Add(Graph[job.To]);
-                }      
+                    _result.P.AddOrUpdate(job.To, job.From, (u, u1) => job.From);
+                    _table.Produce(_graph.GetConccurentNode(job.To));
+                }
             });
+        }
+
+        private bool Reduce(IConcurrentNode<T, TEdgeCustom> to, int distance)
+        {
+            var spin = new SpinWait();
+
+            while (true)
+            {
+                int initialDistance = to.Distance;
+
+                if (initialDistance > distance)
+                {
+                    if (to.TrySetDistance(distance, initialDistance))
+                        return true;
+
+                    spin.SpinOnce();
+                }
+                else
+                    return false;
+            }
         }
     }
 }

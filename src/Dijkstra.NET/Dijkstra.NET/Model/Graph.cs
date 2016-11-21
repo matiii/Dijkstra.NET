@@ -5,9 +5,10 @@
     using System.Collections.Generic;
     using System.Linq;
     using Contract;
-    public class Graph<T, TEdgeCustom>: IGraph<T, TEdgeCustom>, IEnumerable<INode<T, TEdgeCustom>>, ICloneable where TEdgeCustom : IEquatable<TEdgeCustom>
+
+    public class Graph<T, TEdgeCustom>: IConcurrentGraph<T, TEdgeCustom>, IEnumerable<INode<T, TEdgeCustom>>, ICloneable where TEdgeCustom : IEquatable<TEdgeCustom>
     {
-        private readonly IDictionary<uint, INode<T, TEdgeCustom>> _nodes = new Dictionary<uint, INode<T, TEdgeCustom>>();
+        private readonly IDictionary<uint, IConcurrentNode<T, TEdgeCustom>> _nodes = new Dictionary<uint, IConcurrentNode<T, TEdgeCustom>>();
 
         public void AddNode(T item)
         {
@@ -23,7 +24,7 @@
             _nodes.Add(key, new Node<T, TEdgeCustom>(key, item));
         }
 
-        public bool Connect(uint from, uint to, uint cost, TEdgeCustom custom)
+        public bool Connect(uint from, uint to, int cost, TEdgeCustom custom)
         {
             if (!_nodes.ContainsKey(from) || !_nodes.ContainsKey(to))
                 return false;
@@ -42,16 +43,16 @@
         public void Reset()
         {
             foreach (var node in this)
-                node.Distance = UInt32.MaxValue;
+                node.Distance = Int32.MaxValue;
         }
 
-        public bool HasToBeReset() => this.Any(x => x.Distance != UInt32.MaxValue);
+        public bool HasToBeReset() => this.Any(x => x.Distance != Int32.MaxValue);
 
         public IEnumerator<INode<T, TEdgeCustom>> GetEnumerator() => _nodes.Select(x => x.Value).GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public INode<T, TEdgeCustom> this[uint node] => _nodes[node];
-
+        public IConcurrentNode<T, TEdgeCustom> GetConccurentNode(uint node) => _nodes[node];
 
         /// <summary>
         /// Deep copy of graph

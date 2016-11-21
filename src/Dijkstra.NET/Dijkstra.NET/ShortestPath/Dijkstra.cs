@@ -5,7 +5,7 @@
     using Contract;
     using Extensions;
     using NET.Model;
-    using Utility;
+    using NET.Utility;
 
     public class Dijkstra<T, TEdgeCustom> where TEdgeCustom : IEquatable<TEdgeCustom>
     {
@@ -15,8 +15,6 @@
         {
             _graph = graph;
         }
-
-        protected IGraph<T, TEdgeCustom> Graph => _graph;
 
         /// <summary>
         /// Get path from @from to @to

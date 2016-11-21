@@ -3,6 +3,7 @@
     using System.Linq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Model;
+    using ShortestPath;
 
     [TestClass]
     public class DijkstraTest

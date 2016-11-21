@@ -13,7 +13,7 @@
             normal.Setup();
 
             var stopWatch = Stopwatch.StartNew(); 
-            IShortPathResult result = normal.GetPath();
+            IShortestPathResult result = normal.GetPath();
             stopWatch.Stop();
 
             uint[] path = result.GetPath().ToArray();
