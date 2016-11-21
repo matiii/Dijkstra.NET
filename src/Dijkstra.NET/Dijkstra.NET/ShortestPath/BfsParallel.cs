@@ -8,14 +8,14 @@
     using NET.Model;
     using Utility;
 
-    public class DijkstraParallel<T, TEdgeCustom> : Dijkstra<T, TEdgeCustom> where TEdgeCustom : IEquatable<TEdgeCustom>
+    public class BfsParallel<T, TEdgeCustom> : Dijkstra<T, TEdgeCustom> where TEdgeCustom : IEquatable<TEdgeCustom>
     {
         private readonly ProducerConsumer<T, TEdgeCustom> _table;
         private readonly IConcurrentGraph<T, TEdgeCustom> _graph;
 
         private DijkstraConcurrentResult _result;
 
-        public DijkstraParallel(IConcurrentGraph<T, TEdgeCustom> graph) : base(graph)
+        public BfsParallel(IConcurrentGraph<T, TEdgeCustom> graph) : base(graph)
         {
             _graph = graph;
             _table = new ProducerConsumer<T, TEdgeCustom>();
@@ -35,7 +35,11 @@
             map.Start();
             reduce.Start();
 
+            _table.StartGuard();
+
             Task.WaitAll(map, reduce);
+
+            _result.Distance = _graph[to].Distance;
 
             return _result;
         }
@@ -44,7 +48,7 @@
         {
             _table.Producing(node =>
             {
-                if (node.Key != _result.ToNode)
+                if (node.Key != _result.ToNode && node.Children.Count > 0)
                 {
                     for (int i = 0; i < node.Children.Count; i++)
                     {
@@ -52,6 +56,8 @@
                         _table.Consume(new MapReduceJob(node.Key, e.Node.Key, node.Distance, e.Cost));
                     }
                 }
+                else
+                    _table.NotifyGuard();
             });
         }
 
@@ -64,6 +70,8 @@
                     _result.P.AddOrUpdate(job.To, job.From, (u, u1) => job.From);
                     _table.Produce(_graph.GetConccurentNode(job.To));
                 }
+                else
+                    _table.NotifyGuard();
             });
         }
 

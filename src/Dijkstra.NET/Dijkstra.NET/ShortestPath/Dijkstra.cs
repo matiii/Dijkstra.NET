@@ -34,7 +34,7 @@
 
                 if (u.Key == to)
                 {
-                    result.Distance = (int) u.Distance;
+                    result.Distance = u.Distance;
                     break;
                 }
 
