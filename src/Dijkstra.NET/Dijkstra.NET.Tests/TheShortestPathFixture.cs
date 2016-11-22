@@ -30,6 +30,9 @@
             var result = dijkstra.Process(0, 5);
             uint[] path = result.GetPath().ToArray();
 
+            IDisposable disposable = dijkstra as IDisposable;
+            disposable?.Dispose();
+
             Assert.AreEqual<uint>(0, path[0]);
             Assert.AreEqual<uint>(2, path[1]);
             Assert.AreEqual<uint>(3, path[2]);

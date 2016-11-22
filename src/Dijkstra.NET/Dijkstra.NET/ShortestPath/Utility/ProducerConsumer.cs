@@ -6,16 +6,25 @@
     using System.Threading.Tasks;
     using Contract;
     using Model;
+    using Timer = System.Timers.Timer;
 
-    internal class ProducerConsumer<T, TEdgeCustom> where TEdgeCustom : IEquatable<TEdgeCustom>
+    internal sealed class ProducerConsumer<T, TEdgeCustom> : IDisposable where TEdgeCustom : IEquatable<TEdgeCustom>
     {
         private readonly BlockingCollection<IConcurrentNode<T, TEdgeCustom>> _mapper = new BlockingCollection<IConcurrentNode<T, TEdgeCustom>>(new ConcurrentBag<IConcurrentNode<T, TEdgeCustom>>()); //todo: concern collection
         private readonly BlockingCollection<MapReduceJob> _reducer = new BlockingCollection<MapReduceJob>(new ConcurrentBag<MapReduceJob>());
-        private readonly BlockingCollection<int> _guardSchedule = new BlockingCollection<int>();
+
+        private readonly Timer _guardTimer = new Timer(10);
+        private readonly Timer _checkerGuardTimer = new Timer(1);
 
         private int _producersCounter;
         private int _consumersCounter;
 
+        private bool _isDisposed;
+        private int _guardIsWorking;
+
+        private volatile int _counter;
+
+        public int Insurance { get; set; } = 20;
 
         public void Produce(IConcurrentNode<T, TEdgeCustom> product)
         {
@@ -30,15 +39,10 @@
         public void ProduceComplete() => _mapper.CompleteAdding();
         public void ConsumeComplete() => _reducer.CompleteAdding();
 
-        public void StartGuard() => Guard();
-
-
-        public void NotifyGuard()
+        private void StartGuard()
         {
-            if (!_guardSchedule.IsAddingCompleted && !IsConsuming && !IsProducing && _mapper.Count == 0 && _reducer.Count == 0)
-            {
-                _guardSchedule.Add(1);
-            }
+            if (Interlocked.Exchange(ref _guardIsWorking, 1) == 0)
+                Guard();
         }
 
         private bool IsConsuming => _consumersCounter > 0;
@@ -46,25 +50,43 @@
 
         private void Guard()
         {
-            new Task(() =>
+            _guardTimer.Elapsed += (sender, args) =>
             {
-               int _ = _guardSchedule.Take();
-
-                if (!IsConsuming && !IsProducing && _mapper.Count == 0 && _reducer.Count == 0)
+                if (IsNotWorking)
                 {
+                    _guardTimer.Stop();
+                    _checkerGuardTimer.Start();
+                }
+            };
+
+            _checkerGuardTimer.Elapsed += (sender, args) =>
+            {
+                if (_counter == Insurance)
+                {
+                    _checkerGuardTimer.Stop();
+
                     ProduceComplete();
                     ConsumeComplete();
-                    
-                    _guardSchedule.CompleteAdding();
+                } else if (IsNotWorking)
+                {
+                    _counter++;
                 }
+                else
+                {
+                    _checkerGuardTimer.Stop();
+                    _counter = 0;
+                    _guardTimer.Start();
+                }
+            };
 
-            }).Start();
+            _guardTimer.Start();
         }
 
-
+        private bool IsNotWorking => !IsConsuming && !IsProducing && _mapper.Count == 0 && _reducer.Count == 0;
 
         public void Producing(Action<IConcurrentNode<T, TEdgeCustom>> process)
         {
+            StartGuard();
             Parallel.ForEach(_mapper.GetConsumingEnumerable(), node =>
             {
                 Interlocked.Increment(ref _producersCounter);
@@ -75,13 +97,23 @@
 
         public void Consuming(Action<MapReduceJob> process)
         {
+            StartGuard();
             Parallel.ForEach(_reducer.GetConsumingEnumerable(), job =>
             {
                 Interlocked.Increment(ref _consumersCounter);
                 process(job);
                 Interlocked.Decrement(ref _consumersCounter);
-                NotifyGuard();
             });
+        }
+
+        public void Dispose()
+        {
+            if (!_isDisposed)
+            {
+                _guardTimer.Dispose();
+                _checkerGuardTimer.Dispose();
+                _isDisposed = true;
+            }
         }
     }
 }

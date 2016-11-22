@@ -8,12 +8,14 @@
     using NET.Model;
     using Utility;
 
-    public class BfsParallel<T, TEdgeCustom> : Dijkstra<T, TEdgeCustom> where TEdgeCustom : IEquatable<TEdgeCustom>
+    public class BfsParallel<T, TEdgeCustom> : Dijkstra<T, TEdgeCustom>, IDisposable where TEdgeCustom : IEquatable<TEdgeCustom>
     {
         private readonly ProducerConsumer<T, TEdgeCustom> _table;
         private readonly IConcurrentGraph<T, TEdgeCustom> _graph;
 
         private DijkstraConcurrentResult _result;
+
+        private bool _disposed;
 
         public BfsParallel(IConcurrentGraph<T, TEdgeCustom> graph) : base(graph)
         {
@@ -35,8 +37,6 @@
             map.Start();
             reduce.Start();
 
-            _table.StartGuard();
-
             Task.WaitAll(map, reduce);
 
             _result.Distance = _graph[to].Distance;
@@ -56,8 +56,6 @@
                         _table.Consume(new MapReduceJob(node.Key, e.Node.Key, node.Distance, e.Cost));
                     }
                 }
-                else
-                    _table.NotifyGuard();
             });
         }
 
@@ -70,8 +68,6 @@
                     _result.P.AddOrUpdate(job.To, job.From, (u, u1) => job.From);
                     _table.Produce(_graph.GetConccurentNode(job.To));
                 }
-                else
-                    _table.NotifyGuard();
             });
         }
 
@@ -93,6 +89,22 @@
                 else
                     return false;
             }
+        }
+
+        public void Dispose()
+        {
+            if (_disposed)
+                return;
+
+            Dispose(true);
+            GC.SuppressFinalize(this);
+            _disposed = true;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+                _table.Dispose();
         }
     }
 }
