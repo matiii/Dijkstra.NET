@@ -13,8 +13,8 @@
         private readonly BlockingCollection<IConcurrentNode<T, TEdgeCustom>> _mapper = new BlockingCollection<IConcurrentNode<T, TEdgeCustom>>(new ConcurrentBag<IConcurrentNode<T, TEdgeCustom>>()); //todo: concern collection
         private readonly BlockingCollection<MapReduceJob> _reducer = new BlockingCollection<MapReduceJob>(new ConcurrentBag<MapReduceJob>());
 
-        private readonly Timer _guardTimer = new Timer(10);
-        private readonly Timer _checkerGuardTimer = new Timer(1);
+        private readonly Timer _guardTimer = new Timer(1000);
+        private readonly Timer _checkerGuardTimer = new Timer(50);
 
         private int _producersCounter;
         private int _consumersCounter;
@@ -50,8 +50,16 @@
 
         private void Guard()
         {
+            bool firstElapsed = true;
+
             _guardTimer.Elapsed += (sender, args) =>
             {
+                if (firstElapsed)
+                {
+                    firstElapsed = false;
+                    return;
+                }
+
                 if (IsNotWorking)
                 {
                     _guardTimer.Stop();
