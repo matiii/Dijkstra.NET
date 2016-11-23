@@ -73,6 +73,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShortestPath\BfsParallel.cs" />
     <Compile Include="ShortestPath\Model\MapReduceJob.cs" />
+    <Compile Include="ShortestPath\Utility\Collection.cs" />
     <Compile Include="ShortestPath\Utility\ProducerConsumer.cs" />
     <Compile Include="Utility\NodeComparer.cs" />
   </ItemGroup>

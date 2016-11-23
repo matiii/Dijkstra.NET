@@ -2,7 +2,6 @@
 {
     using System;
     using System.Threading;
-    using System.Threading.Tasks;
     using Contract;
     using Model;
     using NET.Model;
@@ -27,28 +26,13 @@
         {
             _result = new DijkstraConcurrentResult(from, to);
 
-            IConcurrentNode<T, TEdgeCustom> node = _graph.GetConccurentNode(from);
-            node.Distance = 0;
-            _table.Produce(node);
+            IConcurrentNode<T, TEdgeCustom> nodeFrom = _graph.GetConccurentNode(from);
+            nodeFrom.Distance = 0;
+            _table.Produce(nodeFrom);
 
-            var map = new Task(Map);
-            var reduce = new Task(Reduce);
-
-            map.Start();
-            reduce.Start();
-
-            Task.WaitAll(map, reduce);
-
-            _result.Distance = _graph[to].Distance;
-
-            return _result;
-        }
-
-        private void Map()
-        {
-            _table.Producing(node =>
+            _table.Producing = node =>
             {
-                if (node.Key != _result.ToNode && node.Children.Count > 0)
+                if (node.Key != _result.ToNode)
                 {
                     for (int i = 0; i < node.Children.Count; i++)
                     {
@@ -56,19 +40,27 @@
                         _table.Consume(new MapReduceJob(node.Key, e.Node.Key, node.Distance, e.Cost));
                     }
                 }
-            });
-        }
+            };
 
-        private void Reduce()
-        {
-            _table.Consuming(job =>
+            _table.Consuming = job =>
             {
                 if (Reduce(_graph.GetConccurentNode(job.To), job.Distance))
                 {
                     _result.P.AddOrUpdate(job.To, job.From, (u, u1) => job.From);
                     _table.Produce(_graph.GetConccurentNode(job.To));
                 }
-            });
+            };
+
+            _table.Work();
+
+            _result.Distance = _graph[to].Distance;
+
+            return _result;
+        }
+
+        public void SetInsurance(int insurance)
+        {
+            _table.Insurance = insurance;
         }
 
         private bool Reduce(IConcurrentNode<T, TEdgeCustom> to, int distance)

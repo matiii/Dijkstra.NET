@@ -20,7 +20,7 @@
         {
             var fixture = new TheShortestPathFixture();
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 500; i++)
                 fixture.Algorithm_Should_Find_Path_In_Multi_Paths_Graph(g => new BfsParallel<int, string>(g));
         }
     }

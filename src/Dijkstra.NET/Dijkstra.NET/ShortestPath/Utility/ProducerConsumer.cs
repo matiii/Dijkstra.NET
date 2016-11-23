@@ -1,7 +1,7 @@
 ﻿namespace Dijkstra.NET.ShortestPath.Utility
 {
     using System;
-    using System.Collections.Concurrent;
+    using System.Diagnostics;
     using System.Threading;
     using System.Threading.Tasks;
     using Contract;
@@ -10,118 +10,116 @@
 
     internal sealed class ProducerConsumer<T, TEdgeCustom> : IDisposable where TEdgeCustom : IEquatable<TEdgeCustom>
     {
-        private readonly BlockingCollection<IConcurrentNode<T, TEdgeCustom>> _mapper = new BlockingCollection<IConcurrentNode<T, TEdgeCustom>>(new ConcurrentBag<IConcurrentNode<T, TEdgeCustom>>()); //todo: concern collection
-        private readonly BlockingCollection<MapReduceJob> _reducer = new BlockingCollection<MapReduceJob>(new ConcurrentBag<MapReduceJob>());
+        private readonly Collection<Emitter> _table = new Collection<Emitter>();
 
-        private readonly Timer _guardTimer = new Timer(1000);
-        private readonly Timer _checkerGuardTimer = new Timer(50);
-
-        private int _producersCounter;
-        private int _consumersCounter;
+        private readonly Timer _guardTimer = new Timer(10);
 
         private bool _isDisposed;
         private int _guardIsWorking;
 
-        private volatile int _counter;
+        private int _currentJobs;
+
+        private int _counter;
+
+        public ProducerConsumer()
+        {
+            _currentJobs = 0;
+
+            _guardTimer.Elapsed += (sender, args) =>
+            {
+                Debug.WriteLine($"Guard thread id: {Thread.CurrentThread.ManagedThreadId}");
+                if (Interlocked.CompareExchange(ref _counter, Insurance, Insurance) == Insurance)
+                {
+                    _guardTimer.Stop();
+                    Complete();
+                }
+                else if (IsNotWorking)
+                    Interlocked.Increment(ref _counter);
+                else
+                    Interlocked.Exchange(ref _counter, 0);
+            };
+        }
 
         public int Insurance { get; set; } = 20;
 
+        public Action<IConcurrentNode<T, TEdgeCustom>> Producing { get; set; }
+        public Action<MapReduceJob> Consuming { get; set; }
+
         public void Produce(IConcurrentNode<T, TEdgeCustom> product)
         {
-            _mapper.Add(product);
+            Emit(new Emitter(product));
         }
 
         public void Consume(MapReduceJob product)
         {
-            _reducer.Add(product);
+            Emit(new Emitter(product));
         }
 
-        public void ProduceComplete() => _mapper.CompleteAdding();
-        public void ConsumeComplete() => _reducer.CompleteAdding();
+        private void Emit(Emitter emitter)
+        {
+            Interlocked.Increment(ref _currentJobs);
+            _table.Add(emitter);
+        }
 
-        private void StartGuard()
+        public void Work()
+        {
+            foreach (var emitter in _table.GetConsumingEnumerable())
+            {
+                Task.Factory.StartNew(() =>
+                {
+                    if (emitter.IsMapper)
+                        Producing(emitter.Mapper);
+                    else
+                        Consuming(emitter.Reducer);
+
+                    Interlocked.Decrement(ref _currentJobs);
+
+                    NotifyGuard();
+                });
+            }
+        }
+
+        public void Complete() => _table.CompleteAdding();
+
+        private void NotifyGuard()
         {
             if (Interlocked.Exchange(ref _guardIsWorking, 1) == 0)
-                Guard();
+                _guardTimer.Start();
+            else
+                Interlocked.Exchange(ref _counter, 0);
         }
 
-        private bool IsConsuming => _consumersCounter > 0;
-        private bool IsProducing => _producersCounter > 0;
-
-        private void Guard()
-        {
-            bool firstElapsed = true;
-
-            _guardTimer.Elapsed += (sender, args) =>
-            {
-                if (firstElapsed)
-                {
-                    firstElapsed = false;
-                    return;
-                }
-
-                if (IsNotWorking)
-                {
-                    _guardTimer.Stop();
-                    _checkerGuardTimer.Start();
-                }
-            };
-
-            _checkerGuardTimer.Elapsed += (sender, args) =>
-            {
-                if (_counter == Insurance)
-                {
-                    _checkerGuardTimer.Stop();
-
-                    ProduceComplete();
-                    ConsumeComplete();
-                } else if (IsNotWorking)
-                {
-                    _counter++;
-                }
-                else
-                {
-                    _checkerGuardTimer.Stop();
-                    _counter = 0;
-                    _guardTimer.Start();
-                }
-            };
-
-            _guardTimer.Start();
-        }
-
-        private bool IsNotWorking => !IsConsuming && !IsProducing && _mapper.Count == 0 && _reducer.Count == 0;
-
-        public void Producing(Action<IConcurrentNode<T, TEdgeCustom>> process)
-        {
-            StartGuard();
-            Parallel.ForEach(_mapper.GetConsumingEnumerable(), node =>
-            {
-                Interlocked.Increment(ref _producersCounter);
-                process(node);
-                Interlocked.Decrement(ref _producersCounter);
-            });
-        }
-
-        public void Consuming(Action<MapReduceJob> process)
-        {
-            StartGuard();
-            Parallel.ForEach(_reducer.GetConsumingEnumerable(), job =>
-            {
-                Interlocked.Increment(ref _consumersCounter);
-                process(job);
-                Interlocked.Decrement(ref _consumersCounter);
-            });
-        }
+        private bool IsNotWorking => _table.Count == 0 && Interlocked.CompareExchange(ref _currentJobs, 0, 0) == 0;
 
         public void Dispose()
         {
             if (!_isDisposed)
             {
                 _guardTimer.Dispose();
-                _checkerGuardTimer.Dispose();
                 _isDisposed = true;
             }
+        }
+
+        private class Emitter
+        {
+            private readonly IConcurrentNode<T, TEdgeCustom> _mapper;
+            private readonly MapReduceJob _reducer;
+
+            public bool IsMapper { get; private set; }
+
+            public Emitter(IConcurrentNode<T, TEdgeCustom> node)
+            {
+                _mapper = node;
+                IsMapper = true;
+            }
+
+            public Emitter(MapReduceJob job)
+            {
+                _reducer = job;
+            }
+
+            public IConcurrentNode<T, TEdgeCustom> Mapper => _mapper;
+            public MapReduceJob Reducer => _reducer;
         }
     }
 }
