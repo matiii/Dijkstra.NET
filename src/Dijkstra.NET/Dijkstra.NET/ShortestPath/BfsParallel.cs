@@ -1,6 +1,7 @@
 ﻿namespace Dijkstra.NET.ShortestPath
 {
     using System;
+    using System.Diagnostics;
     using System.Threading;
     using Contract;
     using Model;
@@ -22,7 +23,7 @@
             _table = new ProducerConsumer<T, TEdgeCustom>();
         }
 
-        public BfsParallel(IConcurrentGraph<T, TEdgeCustom> graph, double guardInterval): base(graph)
+        public BfsParallel(IConcurrentGraph<T, TEdgeCustom> graph, double guardInterval) : base(graph)
         {
             _graph = graph;
             _table = new ProducerConsumer<T, TEdgeCustom>(guardInterval);
@@ -34,7 +35,8 @@
 
             IConcurrentNode<T, TEdgeCustom> nodeFrom = _graph.GetConccurentNode(from);
             nodeFrom.Distance = 0;
-            _table.Produce(nodeFrom);
+
+            _table.Initialise = () => _table.Produce(nodeFrom);
 
             _table.Producing = node =>
             {
@@ -50,9 +52,14 @@
 
             _table.Consuming = job =>
             {
-                if (Reduce(_graph.GetConccurentNode(job.To), job.Distance))
+                if (Reduce(job.From,_graph.GetConccurentNode(job.To), job.Distance))
                 {
-                    _result.P.AddOrUpdate(job.To, job.From, (u, u1) => job.From);
+                    Debug.WriteLineIf(job.To == 3, $"Update ({job.From})->({job.To}) [{job.Distance}]");
+                    //_result.P.AddOrUpdate(job.To, job.From, (u, u1) =>
+                    //{
+                    //    return job.From;
+                    //});
+
                     _table.Produce(_graph.GetConccurentNode(job.To));
                 }
             };
@@ -63,29 +70,26 @@
 
             return _result;
         }
-
+        private object _locker = new object();
+        private object _locker2 = new object();
         public void SetInsurance(int insurance)
         {
             _table.Insurance = insurance;
         }
 
-        private bool Reduce(IConcurrentNode<T, TEdgeCustom> to, int distance)
+        private bool Reduce(uint from, IConcurrentNode<T, TEdgeCustom> to, int distance)
         {
-            var spin = new SpinWait();
-
-            while (true)
+            lock (to)
             {
-                int initialDistance = to.Distance;
-
-                if (initialDistance > distance)
+                if (to.Distance > distance)
                 {
-                    if (to.TrySetDistance(distance, initialDistance))
-                        return true;
+                    to.Distance = distance;
+                    _result.Path[to.Key] = from;
 
-                    spin.SpinOnce();
+                    return true;
                 }
-                else
-                    return false;
+
+                return false;
             }
         }
 

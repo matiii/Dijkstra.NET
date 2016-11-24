@@ -20,7 +20,7 @@
 
         private int _counter;
 
-        public ProducerConsumer(double guardInterval = 20)
+        public ProducerConsumer(double guardInterval = 5)
         {
             _guardTimer = new Timer(guardInterval);
 
@@ -42,6 +42,7 @@
 
         public Action<IConcurrentNode<T, TEdgeCustom>> Producing { get; set; }
         public Action<MapReduceJob> Consuming { get; set; }
+        public Action Initialise { get; set; }
 
         public void Produce(IConcurrentNode<T, TEdgeCustom> product)
         {
@@ -61,6 +62,8 @@
 
         public void Work()
         {
+            Initialise();
+
             foreach (var emitter in _table.GetConsumingEnumerable())
             {
                 Task.Factory.StartNew(() =>
@@ -81,10 +84,15 @@
 
         private void NotifyGuard()
         {
-            if (Interlocked.Exchange(ref _guardIsWorking, 1) == 0)
-                _guardTimer.Start();
-            else
-                Interlocked.Exchange(ref _counter, 0);
+            //if (Interlocked.Exchange(ref _guardIsWorking, 1) == 0)
+            //    _guardTimer.Start();
+            //else
+            //    Interlocked.Exchange(ref _counter, 0);
+
+            if (IsNotWorking)
+            {
+                Complete();
+            }
         }
 
         private bool IsNotWorking => _table.Count == 0 && Interlocked.CompareExchange(ref _currentJobs, 0, 0) == 0;
