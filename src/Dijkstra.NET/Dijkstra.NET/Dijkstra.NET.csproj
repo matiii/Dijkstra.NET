@@ -58,12 +58,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Contract\IConcurrentGraph.cs" />
-    <Compile Include="Contract\IConcurrentNode.cs" />
     <Compile Include="Contract\IGraph.cs" />
     <Compile Include="Contract\INode.cs" />
     <Compile Include="Contract\IShortestPathResult.cs" />
-    <Compile Include="Model\DijkstraConcurrentResult.cs" />
+    <Compile Include="Model\BfsConcurrentResult.cs" />
     <Compile Include="ShortestPath\Dijkstra.cs" />
     <Compile Include="Extensions\SortedSetExtensions.cs" />
     <Compile Include="Model\DijkstraResult.cs" />

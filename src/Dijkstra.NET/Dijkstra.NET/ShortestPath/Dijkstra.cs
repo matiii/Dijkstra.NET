@@ -9,11 +9,11 @@
 
     public class Dijkstra<T, TEdgeCustom> where TEdgeCustom : IEquatable<TEdgeCustom>
     {
-        private readonly IGraph<T, TEdgeCustom> _graph;
+        protected readonly IGraph<T, TEdgeCustom> Graph;
 
         public Dijkstra(IGraph<T, TEdgeCustom> graph)
         {
-            _graph = graph;
+            Graph = graph;
         }
 
         /// <summary>
@@ -25,8 +25,8 @@
         public virtual IShortestPathResult Process(uint from, uint to)
         {
             var result = new DijkstraResult(from, to);
-            _graph[from].Distance = 0;
-            var q = new SortedSet<INode<T, TEdgeCustom>>(new[] {_graph[from]}, new NodeComparer<T, TEdgeCustom>());
+            Graph[from].Distance = 0;
+            var q = new SortedSet<INode<T, TEdgeCustom>>(new[] { Graph[from]}, new NodeComparer<T, TEdgeCustom>());
 
             while (q.Count > 0)
             {

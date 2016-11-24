@@ -6,9 +6,9 @@
     using System.Linq;
     using Contract;
 
-    public class Graph<T, TEdgeCustom>: IConcurrentGraph<T, TEdgeCustom>, IEnumerable<INode<T, TEdgeCustom>>, ICloneable where TEdgeCustom : IEquatable<TEdgeCustom>
+    public class Graph<T, TEdgeCustom>: IGraph<T, TEdgeCustom>, IEnumerable<INode<T, TEdgeCustom>>, ICloneable where TEdgeCustom : IEquatable<TEdgeCustom>
     {
-        private readonly IDictionary<uint, IConcurrentNode<T, TEdgeCustom>> _nodes = new Dictionary<uint, IConcurrentNode<T, TEdgeCustom>>();
+        private readonly IDictionary<uint, INode<T, TEdgeCustom>> _nodes = new Dictionary<uint, INode<T, TEdgeCustom>>();
 
         public void AddNode(T item)
         {
@@ -52,7 +52,6 @@
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public INode<T, TEdgeCustom> this[uint node] => _nodes[node];
-        public IConcurrentNode<T, TEdgeCustom> GetConccurentNode(uint node) => _nodes[node];
 
         /// <summary>
         /// Deep copy of graph
