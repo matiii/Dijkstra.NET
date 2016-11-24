@@ -22,6 +22,12 @@
             _table = new ProducerConsumer<T, TEdgeCustom>();
         }
 
+        public BfsParallel(IConcurrentGraph<T, TEdgeCustom> graph, double guardInterval): base(graph)
+        {
+            _graph = graph;
+            _table = new ProducerConsumer<T, TEdgeCustom>(guardInterval);
+        }
+
         public override IShortestPathResult Process(uint @from, uint to)
         {
             _result = new DijkstraConcurrentResult(from, to);

@@ -11,8 +11,7 @@
     internal sealed class ProducerConsumer<T, TEdgeCustom> : IDisposable where TEdgeCustom : IEquatable<TEdgeCustom>
     {
         private readonly Collection<Emitter> _table = new Collection<Emitter>();
-
-        private readonly Timer _guardTimer = new Timer(10);
+        private readonly Timer _guardTimer;
 
         private bool _isDisposed;
         private int _guardIsWorking;
@@ -21,13 +20,12 @@
 
         private int _counter;
 
-        public ProducerConsumer()
+        public ProducerConsumer(double guardInterval = 20)
         {
-            _currentJobs = 0;
+            _guardTimer = new Timer(guardInterval);
 
             _guardTimer.Elapsed += (sender, args) =>
             {
-                Debug.WriteLine($"Guard thread id: {Thread.CurrentThread.ManagedThreadId}");
                 if (Interlocked.CompareExchange(ref _counter, Insurance, Insurance) == Insurance)
                 {
                     _guardTimer.Stop();
