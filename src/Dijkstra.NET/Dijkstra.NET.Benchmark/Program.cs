@@ -9,19 +9,31 @@
     {
         static void Main()
         {
-            var normal = new  DijkstraBenchmark();
-            normal.Setup();
+            var bfs = new BfsParallelBenchmark();
+            Measure(bfs);
 
-            var stopWatch = Stopwatch.StartNew(); 
-            IShortestPathResult result = normal.GetPath();
+            GC.Collect();
+
+            Measure(new DijkstraBenchmark(bfs.Graph, bfs.From, bfs.To));
+            Console.ReadKey();
+        }
+
+        static void Measure(DijkstraBenchmarkBase benchmark)
+        {
+            string benchmarkName = benchmark.GetType().Name;
+
+            Console.WriteLine($"--- Start {benchmarkName} benchmark. --- \r\n");
+            benchmark.Setup();
+
+            var stopWatch = Stopwatch.StartNew();
+            IShortestPathResult result = benchmark.GetPath();
             stopWatch.Stop();
 
             uint[] path = result.GetPath().ToArray();
 
-            Console.WriteLine($"Dijkstra takes {stopWatch.ElapsedMilliseconds} ms. Length of path is {path.Length}.");
+            Console.WriteLine($"{benchmarkName} takes {stopWatch.ElapsedMilliseconds} ms. Length of path is {path.Length}.");
             Console.WriteLine($"Path: {path.Select(x => x.ToString()).Aggregate((a, b) => a + " -> " + b)}");
-
-            Console.ReadKey();
+            Console.WriteLine($"--- End {benchmarkName} benchmark. --- \r\n");
         }
     }
 }

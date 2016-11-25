@@ -1,6 +1,7 @@
 ﻿namespace Dijkstra.NET.ShortestPath.Utility
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Threading;
     using System.Threading.Tasks;
     using Contract;
@@ -8,7 +9,7 @@
 
     internal sealed class ProducerConsumer<T, TEdgeCustom> where TEdgeCustom : IEquatable<TEdgeCustom>
     {
-        private readonly Collection<Emitter> _table = new Collection<Emitter>();
+        private readonly BlockingCollection<Emitter> _table = new BlockingCollection<Emitter>(50);
 
         private int _currentJobs;
 
