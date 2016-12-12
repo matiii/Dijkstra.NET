@@ -9,6 +9,6 @@
         IList<Edge<T, TEdgeCustom>> Children { get; }
         T Item { get; }
         uint Key { get; }
-        uint Distance { get; set; }
+        int Distance { get; set; }
     }
 }

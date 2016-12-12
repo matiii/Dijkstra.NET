@@ -70,9 +70,11 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="BfsParallelTest.cs" />
     <Compile Include="DijkstraTest.cs" />
     <Compile Include="EdgeTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TheShortestPathFixture.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dijkstra.NET\Dijkstra.NET.csproj">
