@@ -1,4 +1,4 @@
-# Dijkstra.NET Dijkstra algorithm in [C#] [![NuGet Version](https://img.shields.io/badge/nuget-v1.0.4-blue.svg?style=flat)](https://www.nuget.org/packages/Dijkstra.NET)
+# Dijkstra.NET Dijkstra algorithm in [C#] [![NuGet Version](https://img.shields.io/badge/Nuget-1.0.5-blue.svg?style=flat)](https://www.nuget.org/packages/Dijkstra.NET)
 
 Dijkstra algorithm which use priority queue thus complexity is equal O(ElogV) where E is number of edges and V is number of vertices. Used data structures are based on interfaces so you can implement your own or reused present. Simply example below. More information about algorithm you can find on the [wikipedia](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm).
 
@@ -20,9 +20,26 @@ graph.AddNode(2);
 graph.Connect(0, 1, 5, "some custom information in edge"); //First node has key equal 0
 
 var dijkstra = new Dijkstra<int, string>(graph);
-DijkstraResult result = dijkstra.Process(0, 1); //result contains the shortest path
+IShortestPathResult result = dijkstra.Process(0, 1); //result contains the shortest path
 result.GetPath();
 ```
+## Parallel version
+
+Library provide parallel version of finding the shortest path in graph, it uses [breadth-first search](https://en.wikipedia.org/wiki/Breadth-first_search) algorithm and Map-Reduce technics. Parallel version use all cores to find the shortest path thus processing cost is higher than classic way, however it can gives quicker result when dense graph with similar weights was processed. Simple example below.
+
+```c#
+var graph = new Graph<int, string>();
+
+graph.AddNode(1);
+graph.AddNode(2);
+
+graph.Connect(0, 1, 5, "some custom information in edge"); //First node has key equal 0
+
+var bfs = new BfsParallel<int, string>(graph);
+IShortestPathResult result = bfs.Process(0, 1); //result contains the shortest path
+result.GetPath();
+```
+
 ## Benchmark
 
 For Graph where number of vertices is 1 000 000 and number of edges is 10 000 000. Benchmark is available on the [benchmark](https://github.com/matiii/Dijkstra.NET/blob/benchmark/src/Dijkstra.NET/Dijkstra.NET.Benchmark/DijkstraBenchmark.cs) branch.
