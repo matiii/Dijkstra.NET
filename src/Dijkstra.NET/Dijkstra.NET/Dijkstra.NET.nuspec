@@ -11,4 +11,8 @@
     <licenseUrl>https://github.com/matiii/Dijkstra.NET/blob/master/LICENSE</licenseUrl>
     <tags>graphs dijkstra bfs</tags>
   </metadata>
+  <files>
+    <file src="..\..\..\build\*.xml" target="lib\net452" />
+  </files>
+  
 </package>
