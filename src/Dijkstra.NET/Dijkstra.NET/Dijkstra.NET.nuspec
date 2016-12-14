@@ -9,5 +9,6 @@
     <language>en-US</language>
     <projectUrl>https://github.com/matiii/Dijkstra.NET</projectUrl>
     <licenseUrl>https://github.com/matiii/Dijkstra.NET/blob/master/LICENSE</licenseUrl>
+    <tags>graphs dijkstra bfs</tags>
   </metadata>
 </package>

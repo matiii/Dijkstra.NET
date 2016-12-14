@@ -9,6 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dijkstra.NET.Tests", "Dijks
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dijkstra.NET.Benchmark", "Dijkstra.NET.Benchmark\Dijkstra.NET.Benchmark.csproj", "{2BBC072D-75B7-43A3-BECB-BEF9562EE377}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{413C264A-5973-40A6-9126-39766EBA18F6}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\build.fsx = ..\..\build.fsx
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
