@@ -24,6 +24,12 @@
             _fixture.Algorithm_Should_Find_Path_In_Multi_Paths_Graph(_dijkstraFactory);
         }
 
+        [TestMethod, Timeout(2500)]
+        public void Dijkstra_Should_Find_Path_In_Override_Node()
+        {
+            _fixture.Algorithm_Should_Find_Path_In_Override_Node(_dijkstraFactory);
+        }
+
         [TestMethod]
         public void Dijkstra_Should_Find_Path_With_One_Vertex_In_Graph()
         {
