@@ -6,7 +6,7 @@
     using System.Linq;
     using Contract;
 
-    public class Graph<T, TEdgeCustom>: IGraph<T, TEdgeCustom>, IEnumerable<INode<T, TEdgeCustom>>, ICloneable where TEdgeCustom : IEquatable<TEdgeCustom>
+    public class Graph<T, TEdgeCustom>: IGraph<T, TEdgeCustom>, IEnumerable<INode<T, TEdgeCustom>>, ICloneable<Graph<T, TEdgeCustom>> where TEdgeCustom : IEquatable<TEdgeCustom>
     {
         private readonly IDictionary<uint, INode<T, TEdgeCustom>> _nodes = new Dictionary<uint, INode<T, TEdgeCustom>>();
 
@@ -56,8 +56,8 @@
         /// <summary>
         /// Deep copy of graph
         /// </summary>
-        /// <returns></returns>
-        public object Clone()
+        /// <returns>new instance of graph</returns>
+        public Graph<T, TEdgeCustom> Clone()
         {
             var graph = new Graph<T, TEdgeCustom>();
 

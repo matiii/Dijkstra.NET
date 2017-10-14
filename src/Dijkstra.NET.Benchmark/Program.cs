@@ -1,10 +1,10 @@
-﻿namespace Dijkstra.NET.Benchmark
-{
-    using System;
-    using System.Diagnostics;
-    using System.Linq;
-    using Contract;
+﻿using System;
+using System.Diagnostics;
+using System.Linq;
+using Dijkstra.NET.Contract;
 
+namespace Dijkstra.NET.Benchmark
+{
     class Program
     {
         static void Main()

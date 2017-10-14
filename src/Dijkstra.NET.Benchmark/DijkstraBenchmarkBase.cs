@@ -1,9 +1,9 @@
-﻿namespace Dijkstra.NET.Benchmark
-{
-    using System;
-    using Contract;
-    using Model;
+﻿using System;
+using Dijkstra.NET.Contract;
+using Dijkstra.NET.Model;
 
+namespace Dijkstra.NET.Benchmark
+{
     public abstract class DijkstraBenchmarkBase
     {
         protected readonly Graph<int, string> _graph;
