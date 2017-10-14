@@ -1,14 +1,13 @@
-﻿namespace Dijkstra.NET.Tests
-{
-    using System;
-    using System.Linq;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Model;
-    using ShortestPath;
+﻿using System;
+using Dijkstra.NET.Model;
+using Xunit;
+using System.Linq;
 
+namespace Dijkstra.NET.Tests
+{
     internal class TheShortestPathFixture
     {
-        public void Algorithm_Should_Find_Path_In_Multi_Paths_Graph(Func<Graph<int, string>, Dijkstra<int, string>> algorithm)
+        public void Algorithm_Should_Find_Path_In_Multi_Paths_Graph(Func<Graph<int, string>, ShortestPath.Dijkstra<int, string>> algorithm)
         {
             var graph = new Graph<int, string>();
 
@@ -32,16 +31,16 @@
 
             Dispose(dijkstra);
 
-            Assert.AreEqual<uint>(0, path[0]);
-            Assert.AreEqual<uint>(2, path[1]);
-            Assert.AreEqual<uint>(3, path[2]);
-            Assert.AreEqual<uint>(5, path[3]);
+            Assert.Equal<uint>(0, path[0]);
+            Assert.Equal<uint>(2, path[1]);
+            Assert.Equal<uint>(3, path[2]);
+            Assert.Equal<uint>(5, path[3]);
 
-            Assert.AreEqual(11, result.Distance);
-            Assert.IsTrue(result.IsFounded);
+            Assert.Equal(11, result.Distance);
+            Assert.True(result.IsFounded);
         }
 
-        public void Algorithm_Should_Find_Path_In_Override_Node(Func<Graph<int, string>, Dijkstra<int, string>> algorithm)
+        public void Algorithm_Should_Find_Path_In_Override_Node(Func<Graph<int, string>, ShortestPath.Dijkstra<int, string>> algorithm)
         {
             var graph = new Graph<int, string>();
 
@@ -65,17 +64,17 @@
 
             Dispose(dijkstra);
 
-            Assert.AreEqual<uint>(0, path[0]);
-            Assert.AreEqual<uint>(1, path[1]);
-            Assert.AreEqual<uint>(2, path[2]);
-            Assert.AreEqual<uint>(3, path[3]);
-            Assert.AreEqual<uint>(4, path[4]);
+            Assert.Equal<uint>(0, path[0]);
+            Assert.Equal<uint>(1, path[1]);
+            Assert.Equal<uint>(2, path[2]);
+            Assert.Equal<uint>(3, path[3]);
+            Assert.Equal<uint>(4, path[4]);
 
-            Assert.AreEqual(6, result.Distance);
-            Assert.IsTrue(result.IsFounded);
+            Assert.Equal(6, result.Distance);
+            Assert.True(result.IsFounded);
         }
 
-        public void Algorithm_Should_Find_Path_With_One_Vertex_In_Graph(Func<Graph<int, string>, Dijkstra<int, string>> algorithm)
+        public void Algorithm_Should_Find_Path_With_One_Vertex_In_Graph(Func<Graph<int, string>, ShortestPath.Dijkstra<int, string>> algorithm)
         {
             var graph = new Graph<int, string>();
             graph.AddNode(0);
@@ -86,12 +85,12 @@
 
             Dispose(dijkstra);
 
-            Assert.AreEqual<uint>(0, path[0]);
-            Assert.AreEqual(0, result.Distance);
-            Assert.IsTrue(result.IsFounded);
+            Assert.Equal<uint>(0, path[0]);
+            Assert.Equal(0, result.Distance);
+            Assert.True(result.IsFounded);
         }
 
-        public void Algorithm_Should_Find_Path_With_One_Vertex_And_One_Edge_In_Graph(Func<Graph<int, string>, Dijkstra<int, string>> algorithm)
+        public void Algorithm_Should_Find_Path_With_One_Vertex_And_One_Edge_In_Graph(Func<Graph<int, string>, ShortestPath.Dijkstra<int, string>> algorithm)
         {
             var graph = new Graph<int, string>();
             graph.AddNode(0);
@@ -104,12 +103,12 @@
 
             Dispose(dijkstra);
 
-            Assert.AreEqual<uint>(0, path[0]);
-            Assert.AreEqual(0, result.Distance);
-            Assert.IsTrue(result.IsFounded);
+            Assert.Equal<uint>(0, path[0]);
+            Assert.Equal(0, result.Distance);
+            Assert.True(result.IsFounded);
         }
 
-        public void Algorithm_Should_Find_Path_In_Multi_Edges_Graph(Func<Graph<int, string>, Dijkstra<int, string>> algorithm)
+        public void Algorithm_Should_Find_Path_In_Multi_Edges_Graph(Func<Graph<int, string>, ShortestPath.Dijkstra<int, string>> algorithm)
         {
             var graph = new Graph<int, string>();
 
@@ -135,16 +134,16 @@
 
             Dispose(dijkstra);
 
-            Assert.AreEqual<uint>(0, path[0]);
-            Assert.AreEqual<uint>(2, path[1]);
-            Assert.AreEqual<uint>(3, path[2]);
-            Assert.AreEqual<uint>(5, path[3]);
+            Assert.Equal<uint>(0, path[0]);
+            Assert.Equal<uint>(2, path[1]);
+            Assert.Equal<uint>(3, path[2]);
+            Assert.Equal<uint>(5, path[3]);
 
-            Assert.AreEqual(11, result.Distance);
-            Assert.IsTrue(result.IsFounded);
+            Assert.Equal(11, result.Distance);
+            Assert.True(result.IsFounded);
         }
 
-        public void Algorithm_Not_Should_Find_Path_In_Graph(Func<Graph<int, string>, Dijkstra<int, string>> algorithm)
+        public void Algorithm_Not_Should_Find_Path_In_Graph(Func<Graph<int, string>, ShortestPath.Dijkstra<int, string>> algorithm)
         {
             var graph = new Graph<int, string>();
 
@@ -168,10 +167,10 @@
 
             Dispose(dijkstra);
 
-            Assert.IsFalse(result.IsFounded);
+            Assert.False(result.IsFounded);
         }
 
-        private void Dispose(Dijkstra<int, string> algorithm)
+        private void Dispose(ShortestPath.Dijkstra<int, string> algorithm)
         {
             IDisposable disposable = algorithm as IDisposable;
             disposable?.Dispose();

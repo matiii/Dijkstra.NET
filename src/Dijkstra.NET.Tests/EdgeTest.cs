@@ -1,12 +1,11 @@
-﻿namespace Dijkstra.NET.Tests
-{
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Model;
+﻿using Dijkstra.NET.Model;
+using Xunit;
 
-    [TestClass]
+namespace Dijkstra.NET.Tests
+{
     public class EdgeTest
     {
-        [TestMethod]
+        [Fact]
         public void Two_Edges_Should_Be_Equal()
         {
             var a = new Edge<string, int>(new Node<string, int>(0, "node1"), 1, 1);
@@ -14,10 +13,10 @@
 
             bool act = a.Equals(b);
 
-            Assert.IsTrue(act);
+            Assert.True(act);
         }
 
-        [TestMethod]
+        [Fact]
         public void Two_Edges_Should_Be_Equal_With_Null_References()
         {
             var a = new Edge<string, string>(new Node<string, string>(0, "node1"), 1, null);
@@ -25,10 +24,10 @@
 
             bool act = a.Equals(b);
 
-            Assert.IsTrue(act);
+            Assert.True(act);
         }
 
-        [TestMethod]
+        [Fact]
         public void Two_Edges_Should_Be_Diffrent_With_Null_Reference()
         {
             var a = new Edge<string, string>(new Node<string, string>(0, "node1"), 1, null);
@@ -37,11 +36,11 @@
             bool act = a.Equals(b);
             bool act2 = b.Equals(a);
 
-            Assert.IsFalse(act);
-            Assert.IsFalse(act2);
+            Assert.False(act);
+            Assert.False(act2);
         }
 
-        [TestMethod]
+        [Fact]
         public void Two_Edges_Should_Be_Diffrent_With_Diffrent_Parameter()
         {
             var a = new Edge<string, string>(new Node<string, string>(0, "node1"), 1, "b");
@@ -50,11 +49,11 @@
             bool act = a.Equals(b);
             bool act2 = b.Equals(a);
 
-            Assert.IsFalse(act);
-            Assert.IsFalse(act2);
+            Assert.False(act);
+            Assert.False(act2);
         }
 
-        [TestMethod]
+        [Fact]
         public void Two_Edges_Should_Be_Diffrent_With_Diffrent_Costs()
         {
             var a = new Edge<string, string>(new Node<string, string>(0, "node1"), 3, "a");
@@ -63,11 +62,11 @@
             bool act = a.Equals(b);
             bool act2 = b.Equals(a);
 
-            Assert.IsFalse(act);
-            Assert.IsFalse(act2);
+            Assert.False(act);
+            Assert.False(act2);
         }
 
-        [TestMethod]
+        [Fact]
         public void Two_Edges_Should_Be_Diffrent_With_Diffrent_Nodes()
         {
             var a = new Edge<string, string>(new Node<string, string>(0, "node1"), 1, "a");
@@ -76,8 +75,8 @@
             bool act = a.Equals(b);
             bool act2 = b.Equals(a);
 
-            Assert.IsFalse(act);
-            Assert.IsFalse(act2);
+            Assert.False(act);
+            Assert.False(act2);
         }
     }
 }

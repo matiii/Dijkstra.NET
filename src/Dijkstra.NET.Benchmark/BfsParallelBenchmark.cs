@@ -1,9 +1,9 @@
-﻿namespace Dijkstra.NET.Benchmark
-{
-    using Contract;
-    using Model;
-    using ShortestPath;
+﻿using Dijkstra.NET.Contract;
+using Dijkstra.NET.Model;
+using Dijkstra.NET.ShortestPath;
 
+namespace Dijkstra.NET.Benchmark
+{
     public class BfsParallelBenchmark: DijkstraBenchmarkBase
     {
         public BfsParallelBenchmark()

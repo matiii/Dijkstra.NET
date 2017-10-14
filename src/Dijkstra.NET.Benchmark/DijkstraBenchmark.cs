@@ -1,9 +1,8 @@
-﻿namespace Dijkstra.NET.Benchmark
-{
-    using Contract;
-    using Model;
-    using ShortestPath;
+﻿using Dijkstra.NET.Contract;
+using Dijkstra.NET.Model;
 
+namespace Dijkstra.NET.Benchmark
+{
     public class DijkstraBenchmark: DijkstraBenchmarkBase
     {
 
@@ -17,7 +16,7 @@
 
         public override IShortestPathResult GetPath()
         {
-            var dijkstra = new Dijkstra<int, string>(_graph);
+            var dijkstra = new ShortestPath.Dijkstra<int, string>(_graph);
             return dijkstra.Process(_from, _to);
         }
         
