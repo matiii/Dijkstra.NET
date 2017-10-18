@@ -14,8 +14,13 @@
         }
 
         public IList<Edge<T, TEdgeCustom>> Children { get; } = new List<Edge<T, TEdgeCustom>>();
+
         public uint Key { get; }
+
         public T Item { get; }
+
         public int Distance { get; set; }
+
+        public int QueueIndex { get; set; }
     }
 }

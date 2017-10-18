@@ -43,7 +43,10 @@
         public void Reset()
         {
             foreach (var node in this)
+            {
                 node.Distance = Int32.MaxValue;
+                node.QueueIndex = 0;
+            }
         }
 
         public bool HasToBeReset() => this.Any(x => x.Distance != Int32.MaxValue);
@@ -52,6 +55,8 @@
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public INode<T, TEdgeCustom> this[uint node] => _nodes[node];
+
+        public int Count => _nodes.Count;
 
         /// <summary>
         /// Deep copy of graph
