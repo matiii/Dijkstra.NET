@@ -1,16 +1,25 @@
-﻿namespace Dijkstra.NET.ShortestPath
-{
-    using System;
-    using System.Collections.Generic;
-    using Contract;
-    using Extensions;
-    using NET.Model;
-    using NET.Utility;
+﻿using System;
+using System.Collections.Generic;
+using Dijkstra.NET.Contract;
+using Dijkstra.NET.Extensions;
+using Dijkstra.NET.Model;
+using Dijkstra.NET.Utility;
 
+namespace Dijkstra.NET.ShortestPath
+{
+    /// <summary>
+    /// Find the shortest path @from @to
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="TEdgeCustom"></typeparam>
     public class Dijkstra<T, TEdgeCustom> where TEdgeCustom : IEquatable<TEdgeCustom>
     {
         protected readonly IGraph<T, TEdgeCustom> Graph;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="graph">Find the shortest path based on graph</param>
         public Dijkstra(IGraph<T, TEdgeCustom> graph)
         {
             Graph = graph;
