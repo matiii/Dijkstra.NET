@@ -1,11 +1,11 @@
-﻿namespace Dijkstra.NET.ShortestPath
-{
-    using System;
-    using Contract;
-    using Model;
-    using NET.Model;
-    using Utility;
+﻿using System;
+using Dijkstra.NET.Contract;
+using Dijkstra.NET.Model;
+using Dijkstra.NET.ShortestPath.Model;
+using Dijkstra.NET.ShortestPath.Utility;
 
+namespace Dijkstra.NET.ShortestPath
+{
     public class BfsParallel<T, TEdgeCustom> : Dijkstra<T, TEdgeCustom> where TEdgeCustom : IEquatable<TEdgeCustom>
     {
         private readonly ProducerConsumer<T, TEdgeCustom> _table;

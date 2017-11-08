@@ -1,12 +1,12 @@
-﻿namespace Dijkstra.NET.ShortestPath.Utility
-{
-    using System;
-    using System.Collections.Concurrent;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Contract;
-    using Model;
+﻿using System;
+using System.Collections.Concurrent;
+using System.Threading;
+using System.Threading.Tasks;
+using Dijkstra.NET.Contract;
+using Dijkstra.NET.ShortestPath.Model;
 
+namespace Dijkstra.NET.ShortestPath.Utility
+{
     internal sealed class ProducerConsumer<T, TEdgeCustom> where TEdgeCustom : IEquatable<TEdgeCustom>
     {
         private readonly BlockingCollection<Emitter> _table = new BlockingCollection<Emitter>(50);
@@ -36,7 +36,7 @@
         public void Work()
         {
             Initialise();
-
+            
             foreach (var emitter in _table.GetConsumingEnumerable())
             {
                 Task.Factory.StartNew(() =>

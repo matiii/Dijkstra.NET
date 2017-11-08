@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Dijkstra.NET.Contract;
-using Dijkstra.NET.Model;
 
 namespace Dijkstra.NET.Utility
 {
@@ -11,7 +10,6 @@ namespace Dijkstra.NET.Utility
         where T : INode<TItem, TEdgeCustom>
         where TEdgeCustom: IEquatable<TEdgeCustom>
     {
-
         private int _numNodes;
         private T[] _nodes;
 
@@ -358,9 +356,7 @@ namespace Dijkstra.NET.Utility
             OnNodeUpdated(node);
         }
 
-#if NET_VERSION_4_5
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-#endif
         private void OnNodeUpdated(T node)
         {
             //Bubble the updated node up or down as appropriate
@@ -388,7 +384,7 @@ namespace Dijkstra.NET.Utility
 #if DEBUG
             if (node == null)
             {
-                throw new ArgumentNullException("node");
+                throw new ArgumentNullException(nameof(node));
             }
             if (!Contains(node))
             {

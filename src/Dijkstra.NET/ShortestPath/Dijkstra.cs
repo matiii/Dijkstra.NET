@@ -1,12 +1,10 @@
-﻿namespace Dijkstra.NET.ShortestPath
-{
-    using System;
-    using System.Collections.Generic;
-    using Contract;
-    using Extensions;
-    using NET.Model;
-    using NET.Utility;
+﻿using System;
+using Dijkstra.NET.Contract;
+using Dijkstra.NET.Model;
+using Dijkstra.NET.Utility;
 
+namespace Dijkstra.NET.ShortestPath
+{
     public class Dijkstra<T, TEdgeCustom> where TEdgeCustom : IEquatable<TEdgeCustom>
     {
         protected readonly IGraph<T, TEdgeCustom> Graph;
@@ -25,8 +23,6 @@
         public virtual IShortestPathResult Process(uint from, uint to)
         {
             var result = new DijkstraResult(from, to);
-            //var q = new SortedSet<INode<T, TEdgeCustom>>(new[] { Graph[from]}, new NodeComparer<T, TEdgeCustom>());
-            //var current = new HashSet<uint>();
 
             var q = new PriorityQueue<INode<T, TEdgeCustom>, T, TEdgeCustom>(Graph.Count);
 
@@ -35,7 +31,6 @@
             while (q.Count > 0)
             {
                 INode<T, TEdgeCustom> u = q.Dequeue();
-                //current.Remove(u.Key);
 
                 if (u.Key == to)
                 {
@@ -53,7 +48,6 @@
 
                         if (q.Contains(e.Node))
                         {
-                            //    q.Remove(e.Node);
                             q.UpdatePriority(e.Node, distance);
                         }
                         else
@@ -61,7 +55,6 @@
                             q.Enqueue(e.Node, distance);
                         }
 
-                        //current.Add(e.Node.Key);
                         result.Path[e.Node.Key] = u.Key;
                     }
                 }
