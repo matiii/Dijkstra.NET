@@ -1,10 +1,10 @@
-﻿namespace Dijkstra.NET.Model
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Contract;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Dijkstra.NET.Contract;
 
+namespace Dijkstra.NET.Model
+{
     public class DijkstraResult: IShortestPathResult
     {
         private readonly uint _from;
@@ -20,9 +20,13 @@
         }
 
         public int Distance { get; set; }
+
         public uint FromNode => _from;
+
         public uint ToNode => _to;
+
         public virtual IDictionary<uint, uint> Path => _path;
+
         public bool IsFounded => Distance != Int32.MaxValue;
 
         public IEnumerable<uint> GetReversePath()

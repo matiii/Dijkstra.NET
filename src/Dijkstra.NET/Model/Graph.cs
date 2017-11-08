@@ -1,11 +1,11 @@
-﻿namespace Dijkstra.NET.Model
-{
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Contract;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Dijkstra.NET.Contract;
 
+namespace Dijkstra.NET.Model
+{
     public class Graph<T, TEdgeCustom>: IGraph<T, TEdgeCustom>, IEnumerable<INode<T, TEdgeCustom>>, ICloneable<Graph<T, TEdgeCustom>> where TEdgeCustom : IEquatable<TEdgeCustom>
     {
         private readonly IDictionary<uint, INode<T, TEdgeCustom>> _nodes = new Dictionary<uint, INode<T, TEdgeCustom>>();

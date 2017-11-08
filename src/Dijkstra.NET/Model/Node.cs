@@ -1,9 +1,9 @@
-﻿namespace Dijkstra.NET.Model
-{
-    using System;
-    using System.Collections.Generic;
-    using Contract;
+﻿using System;
+using System.Collections.Generic;
+using Dijkstra.NET.Contract;
 
+namespace Dijkstra.NET.Model
+{
     public class Node<T, TEdgeCustom>: INode<T, TEdgeCustom> where TEdgeCustom: IEquatable<TEdgeCustom>
     {
         public Node(uint key, T item)

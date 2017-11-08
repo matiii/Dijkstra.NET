@@ -1,8 +1,9 @@
-﻿namespace Dijkstra.NET.Model
+﻿using System;
+using System.Collections.Generic;
+using Dijkstra.NET.Contract;
+
+namespace Dijkstra.NET.Model
 {
-    using System;
-    using System.Collections.Generic;
-    using Contract;
     public struct Edge<T, TCustom>: IEquatable<Edge<T, TCustom>> where TCustom: IEquatable<TCustom>
     {
         public Edge(INode<T, TCustom> node, int cost, TCustom custom)
