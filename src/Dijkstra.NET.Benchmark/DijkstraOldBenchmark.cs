@@ -3,12 +3,12 @@ using Dijkstra.NET.ShortestPath;
 
 namespace Dijkstra.NET.Benchmark
 {
-    public class BfsParallelBenchmark: DijkstraBenchmarkBase
+    public class DijkstraOldBenchmark: DijkstraBenchmarkBase
     {
         public override IShortestPathResult GetPath()
         {
-            var bfs = new BfsParallel<int, string>(Graph);
-            return bfs.Process(From, To);
+            var dijkstra = new DijkstraOld<int, string>(Graph);
+            return dijkstra.Process(From, To);
         }
     }
 }
