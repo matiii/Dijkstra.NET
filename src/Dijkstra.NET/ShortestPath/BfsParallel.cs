@@ -1,17 +1,26 @@
-﻿namespace Dijkstra.NET.ShortestPath
-{
-    using System;
-    using Contract;
-    using Model;
-    using NET.Model;
-    using Utility;
+﻿using System;
+using Dijkstra.NET.Contract;
+using Dijkstra.NET.Model;
+using Dijkstra.NET.ShortestPath.Model;
+using Dijkstra.NET.ShortestPath.Utility;
 
+namespace Dijkstra.NET.ShortestPath
+{
+    /// <summary>
+    /// Find the shortest path
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="TEdgeCustom"></typeparam>
     public class BfsParallel<T, TEdgeCustom> : Dijkstra<T, TEdgeCustom> where TEdgeCustom : IEquatable<TEdgeCustom>
     {
         private readonly ProducerConsumer<T, TEdgeCustom> _table;
 
         private BfsConcurrentResult _result;
 
+        /// <summary>
+        /// Contstructor
+        /// </summary>
+        /// <param name="graph">Find the short path based on graph</param>
         public BfsParallel(IGraph<T, TEdgeCustom> graph) : base(graph)
         {
             _table = new ProducerConsumer<T, TEdgeCustom>();

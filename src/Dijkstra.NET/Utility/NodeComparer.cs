@@ -1,9 +1,9 @@
-﻿namespace Dijkstra.NET.Utility
-{
-    using System;
-    using System.Collections.Generic;
-    using Contract;
+using System;
+using System.Collections.Generic;
+using Dijkstra.NET.Contract;
 
+namespace Dijkstra.NET.Utility
+{
     internal class NodeComparer<T, TEdgeCustom> : IComparer<INode<T, TEdgeCustom>> where TEdgeCustom : IEquatable<TEdgeCustom>
     {
         public int Compare(INode<T, TEdgeCustom> x, INode<T, TEdgeCustom> y)
