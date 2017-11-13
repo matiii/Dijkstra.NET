@@ -42,26 +42,24 @@ result.GetPath();
 
 ## Benchmark
 
-For Graph where number of vertices is 1 000 000 and number of edges is 10 000 000. Benchmark is available on the [benchmark](https://github.com/matiii/Dijkstra.NET/blob/benchmark/src/Dijkstra.NET/Dijkstra.NET.Benchmark/DijkstraBenchmark.cs) branch.
+For Graph where number of nodes is 10 000 000 and connections between them 1 000 000. The length of path is minimum 10.
 
-```ini
+``` ini
 
-Host Process Environment Information:
-BenchmarkDotNet.Core=v0.9.9.0
-OS=Microsoft Windows NT 6.2.9200.0
-Processor=Intel(R) Core(TM) i7-6820HQ CPU 2.70GHz, ProcessorCount=8
-Frequency=2648439 ticks, Resolution=377.5809 ns, Timer=TSC
-CLR=MS.NET 4.0.30319.42000, Arch=64-bit RELEASE [RyuJIT]
-GC=Concurrent Workstation
-JitModules=clrjit-v4.6.1586.0
+BenchmarkDotNet=v0.10.10, OS=Windows 7 SP1 (6.1.7601.0)
+Processor=Intel Core i7-6600U CPU 2.60GHz (Skylake), ProcessorCount=4
+Frequency=2742265 Hz, Resolution=364.6621 ns, Timer=TSC
+  [Host]     : .NET Framework 4.7 (CLR 4.0.30319.42000), 32bit LegacyJIT-v4.7.2116.0
+  Job-XQYAYC : .NET Framework 4.7 (CLR 4.0.30319.42000), 32bit LegacyJIT-v4.7.2116.0
 
-Type=DijkstraBenchmark  Mode=SingleRun  LaunchCount=1  
-WarmupCount=1  TargetCount=1  
+LaunchCount=1  RunStrategy=Monitoring  TargetCount=3  
+WarmupCount=2  
 
 ```
-  Method |      Median |    StdDev |
--------- |------------ |---------- |
- GetPath | [695.5040 us](https://www.google.pl/#q=695+us+to+sec) | 0.0000 us |
+|            Method |      Mean |    StdDev | Scaled | ScaledSD |
+|------------------ |----------:|----------:|-------:|---------:|
+| DijkstraBenchmark |  24.07 us |  2.188 us |   1.00 |     0.00 |
+|      BfsBenchmark | 173.82 us | 19.673 us |   7.26 |     0.86 |
 
 ## License
 
