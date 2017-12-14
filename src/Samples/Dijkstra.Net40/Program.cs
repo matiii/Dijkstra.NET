@@ -1,4 +1,6 @@
-﻿using Dijkstra.NET.Contract;
+﻿using System;
+using System.Linq;
+using Dijkstra.NET.Contract;
 using Dijkstra.NET.Model;
 using Dijkstra.NET.ShortestPath;
 
@@ -19,6 +21,19 @@ namespace Dijkstra.Net40
             IShortestPathResult result = dijkstra.Process(0, 1); //result contains the shortest path
 
             var path = result.GetPath();
+
+            graph.Reset();
+
+            var bfs = new BfsParallel<int, string>(graph);
+
+            IShortestPathResult bfsResult = bfs.Process(0, 1);
+
+            var bfsPath = bfsResult.GetPath();
+
+            if (!bfsPath.SequenceEqual(path))
+            {
+                throw new Exception("The path should be the same.");
+            }
         }
     }
 }
