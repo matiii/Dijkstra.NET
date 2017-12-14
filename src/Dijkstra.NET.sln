@@ -1,13 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.27004.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dijkstra.NET", "Dijkstra.NET\Dijkstra.NET.csproj", "{2D42C275-6A10-4AC9-BBCF-1483FEB68B04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dijkstra.NET", "Dijkstra.NET\Dijkstra.NET.csproj", "{2D42C275-6A10-4AC9-BBCF-1483FEB68B04}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dijkstra.NET.Tests", "Dijkstra.NET.Tests\Dijkstra.NET.Tests.csproj", "{70A4E3BB-08CC-4105-B753-A176CA8ACCD4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dijkstra.NET.Benchmark", "Dijkstra.NET.Benchmark\Dijkstra.NET.Benchmark.csproj", "{FD137CCE-DB20-4C6A-ABBB-6E853994DB29}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{20A0B105-1344-4E76-B1E9-442217A527C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dijkstra.Net40", "Samples\Dijkstra.Net40\Dijkstra.Net40.csproj", "{6DBC26CB-148B-48CE-8B24-3177541C83E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,9 +31,16 @@ Global
 		{FD137CCE-DB20-4C6A-ABBB-6E853994DB29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD137CCE-DB20-4C6A-ABBB-6E853994DB29}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD137CCE-DB20-4C6A-ABBB-6E853994DB29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DBC26CB-148B-48CE-8B24-3177541C83E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DBC26CB-148B-48CE-8B24-3177541C83E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DBC26CB-148B-48CE-8B24-3177541C83E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DBC26CB-148B-48CE-8B24-3177541C83E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6DBC26CB-148B-48CE-8B24-3177541C83E7} = {20A0B105-1344-4E76-B1E9-442217A527C0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0F4388FD-4FB5-4B5A-9CD2-923DC611107D}
