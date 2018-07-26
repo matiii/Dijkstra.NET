@@ -67,12 +67,10 @@ namespace Dijkstra.NET.Model
             foreach (var node in _nodes.Values)
                 graph.AddNode(node.Key, node.Item);
 
-            //todo
-//            foreach (var node in _nodes.Values.Where(x => x.Children.Count > 0))
-//            {
-//                foreach (var edge in node.Children)
-//                    graph.Connect(node.Key, edge.Node.Key, edge.Cost, edge.Item);
-//            }
+            foreach (var node in _nodes.Values.Where(x => x.ChildrenCount > 0))
+            {
+                node.EachChild((in Edge<T, TEdgeCustom> edge) => graph.Connect(node.Key, edge.Node.Key, edge.Cost, edge.Item));
+            }
 
             return graph;
         }

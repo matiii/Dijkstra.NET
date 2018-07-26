@@ -11,7 +11,7 @@ namespace Dijkstra.NET.ShortestPath
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <typeparam name="TEdgeCustom"></typeparam>
-    [Obsolete]
+    [Obsolete("BFS paraller version will not be supported any more and removed in next release.")]
     public class BfsParallel<T, TEdgeCustom> : Dijkstra<T, TEdgeCustom> where TEdgeCustom : IEquatable<TEdgeCustom>
     {
         private readonly ProducerConsumer<T, TEdgeCustom> _table;

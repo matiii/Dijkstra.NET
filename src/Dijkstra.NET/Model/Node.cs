@@ -40,7 +40,6 @@ namespace Dijkstra.NET.Model
                     newSize = bigSize < Int32.MaxValue ? (int)bigSize : Int32.MaxValue;
                 }
 
-
                 Array.Resize(ref _children, newSize);
             }
 

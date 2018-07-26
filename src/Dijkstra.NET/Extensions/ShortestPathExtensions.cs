@@ -8,6 +8,13 @@ namespace Dijkstra.NET.Extensions
 {
     public static class ShortestPathExtensions
     {
+        /// <summary>
+        /// Get path from @from to @to
+        /// </summary>
+        /// <param name="graph">Source graph</param>
+        /// <param name="from">Start node</param>
+        /// <param name="to">End node</param>
+        /// <returns>Value with path</returns>
         public static ShortestPathResult Dijkstra<T, TEdgeCustom>(this IGraph<T, TEdgeCustom> graph, uint from, uint to)
             where TEdgeCustom : IEquatable<TEdgeCustom>
         {
