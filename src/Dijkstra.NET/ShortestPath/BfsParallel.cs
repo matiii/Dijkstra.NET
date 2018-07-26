@@ -11,6 +11,7 @@ namespace Dijkstra.NET.ShortestPath
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <typeparam name="TEdgeCustom"></typeparam>
+    [Obsolete("BFS paraller version will not be supported any more and removed in next release.")]
     public class BfsParallel<T, TEdgeCustom> : Dijkstra<T, TEdgeCustom> where TEdgeCustom : IEquatable<TEdgeCustom>
     {
         private readonly ProducerConsumer<T, TEdgeCustom> _table;
@@ -39,11 +40,10 @@ namespace Dijkstra.NET.ShortestPath
             {
                 if (node.Key != _result.ToNode)
                 {
-                    for (int i = 0; i < node.Children.Count; i++)
+                    node.EachChild((in Edge<T, TEdgeCustom> e) =>
                     {
-                        Edge<T, TEdgeCustom> e = node.Children[i];
                         _table.Consume(new MapReduceJob(node.Key, e.Node.Key, node.Distance, e.Cost));
-                    }
+                    });
                 }
             };
 

@@ -12,6 +12,7 @@ namespace Dijkstra.NET.ShortestPath
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <typeparam name="TEdgeCustom"></typeparam>
+    [Obsolete("Please use Dijkstra.NET.Extensions.Dijkstra method instead.")]
     public class Dijkstra<T, TEdgeCustom> where TEdgeCustom : IEquatable<TEdgeCustom>
     {
         protected readonly IGraph<T, TEdgeCustom> Graph;
@@ -49,10 +50,8 @@ namespace Dijkstra.NET.ShortestPath
                     break;
                 }
 
-                for (int i = 0; i < u.Children.Count; i++)
+                u.EachChild((in Edge<T, TEdgeCustom> e) =>
                 {
-                    Edge<T, TEdgeCustom> e = u.Children[i];
-
                     if (e.Node.Distance > u.Distance + e.Cost)
                     {
                         if (current.Contains(e.Node.Key))
@@ -63,7 +62,7 @@ namespace Dijkstra.NET.ShortestPath
                         current.Add(e.Node.Key);
                         result.Path[e.Node.Key] = u.Key;
                     }
-                }
+                });
             }
 
             return result;

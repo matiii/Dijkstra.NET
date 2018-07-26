@@ -6,13 +6,13 @@ namespace Dijkstra.NET.Benchmark
 {
     public abstract class DijkstraBenchmarkBase
     {
-        protected static readonly Graph<int, string> Graph = new Graph<int, string>();
+        public static readonly Graph<int, string> Graph = new Graph<int, string>();
 
         private const int Nodes = 10_000_000;
         private const int Connections = 1_000_000;
 
-        public uint From { get; private set; }
-        public uint To { get; private set; }
+        public static uint From { get; private set; }
+        public static uint To { get; private set; }
 
         public void Initialise()
         {
