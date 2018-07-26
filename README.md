@@ -1,6 +1,6 @@
-# Dijkstra.NET Dijkstra algorithm in C&#35; [![NuGet Version](https://img.shields.io/badge/Dijkstra.NET-1.0.8-blue.svg)](https://www.nuget.org/packages/Dijkstra.NET)
+# Dijkstra.NET Dijkstra algorithm in C&#35; [![NuGet Version](https://img.shields.io/badge/Dijkstra.NET-1.0.9-blue.svg)](https://www.nuget.org/packages/Dijkstra.NET)
 
-Dijkstra algorithm which use priority queue thus complexity is equal O(ElogV) where E is number of edges and V is number of vertices. Used data structures are based on interfaces so you can implement your own or reused present. Simply example below. More information about algorithm you can find on the [wikipedia](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm).
+Dijkstra algorithm which use priority queue thus complexity is equal O(ElogV) where E is number of edges and V is number of vertices. Used data structures are based on interfaces so you can implement your own or reused present. Simply example below. More information about algorithm you can find on [Wikipedia](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm).
 
 ## Get Started
 Install the latest version from NuGet
@@ -12,6 +12,8 @@ Install the latest version from NuGet
 ## Simple example
 
 ```c#
+using Dijkstra.NET.Extensions;
+
 var graph = new Graph<int, string>();
 
 graph.AddNode(1);
@@ -19,11 +21,11 @@ graph.AddNode(2);
 
 graph.Connect(0, 1, 5, "some custom information in edge"); //First node has key equal 0
 
-var dijkstra = new Dijkstra<int, string>(graph);
-IShortestPathResult result = dijkstra.Process(0, 1); //result contains the shortest path
+ShortestPathResult result = graph.Dijkstra(0, 1); //result contains the shortest path
+
 result.GetPath();
 ```
-## Parallel version
+## Parallel version - obsolete
 
 Library provide parallel version of finding the shortest path in graph, it uses [breadth-first search](https://en.wikipedia.org/wiki/Breadth-first_search) algorithm and Map-Reduce technics. Parallel version use all cores to find the shortest path thus processing cost is higher than classic way, however it can gives quicker result when dense graph with similar weights was processed. Simple example below.
 
