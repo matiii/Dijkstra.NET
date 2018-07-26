@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard1.3;net40</TargetFrameworks>
-    <Version>1.0.8</Version>
+    <Version>1.0.9</Version>
     <Authors>Mateusz Mazurek</Authors>
     <Company />
     <Description>High performance the shortest path in directed graph with non negative weights algorithm implementation.</Description>
@@ -11,10 +11,7 @@
     <RepositoryUrl>https://github.com/matiii/Dijkstra.NET</RepositoryUrl>
     <PackageTags>graphs dijkstra bfs</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard1.3\Dijkstra.NET.xml</DocumentationFile>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
 
 </Project>

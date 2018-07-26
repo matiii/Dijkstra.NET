@@ -1,14 +1,14 @@
-﻿namespace Dijkstra.NET.Model
-{
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Contract;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Dijkstra.NET.Contract;
 
+namespace Dijkstra.NET.Model
+{
     public class Graph<T, TEdgeCustom>: IGraph<T, TEdgeCustom>, IEnumerable<INode<T, TEdgeCustom>>, ICloneable<Graph<T, TEdgeCustom>> where TEdgeCustom : IEquatable<TEdgeCustom>
     {
-        private readonly IDictionary<uint, INode<T, TEdgeCustom>> _nodes = new Dictionary<uint, INode<T, TEdgeCustom>>();
+        private readonly IDictionary<uint, Node<T, TEdgeCustom>> _nodes = new Dictionary<uint, Node<T, TEdgeCustom>>();
 
         public void AddNode(T item)
         {
@@ -29,10 +29,10 @@
             if (!_nodes.ContainsKey(from) || !_nodes.ContainsKey(to))
                 return false;
 
-            INode<T,TEdgeCustom> nodeFrom = this[from];
-            INode<T, TEdgeCustom> nodeTo = this[to];
+            Node<T,TEdgeCustom> nodeFrom = _nodes[from];
+            Node<T, TEdgeCustom> nodeTo = _nodes[to];
 
-            nodeFrom.Children.Add(new Edge<T, TEdgeCustom>(nodeTo, cost, custom));
+            nodeFrom.AddChild(new Edge<T, TEdgeCustom>(nodeTo, cost, custom));
 
             return true;
         }
@@ -40,12 +40,14 @@
         /// <summary>
         /// Reset distance in nodes
         /// </summary>
+        [Obsolete]
         public void Reset()
         {
             foreach (var node in this)
                 node.Distance = Int32.MaxValue;
         }
 
+        [Obsolete]
         public bool HasToBeReset() => this.Any(x => x.Distance != Int32.MaxValue);
 
         public IEnumerator<INode<T, TEdgeCustom>> GetEnumerator() => _nodes.Select(x => x.Value).GetEnumerator();
@@ -57,6 +59,7 @@
         /// Deep copy of graph
         /// </summary>
         /// <returns>new instance of graph</returns>
+        [Obsolete]
         public Graph<T, TEdgeCustom> Clone()
         {
             var graph = new Graph<T, TEdgeCustom>();
@@ -64,11 +67,12 @@
             foreach (var node in _nodes.Values)
                 graph.AddNode(node.Key, node.Item);
 
-            foreach (var node in _nodes.Values.Where(x => x.Children.Count > 0))
-            {
-                foreach (var edge in node.Children)
-                    graph.Connect(node.Key, edge.Node.Key, edge.Cost, edge.Item);
-            }
+            //todo
+//            foreach (var node in _nodes.Values.Where(x => x.Children.Count > 0))
+//            {
+//                foreach (var edge in node.Children)
+//                    graph.Connect(node.Key, edge.Node.Key, edge.Cost, edge.Item);
+//            }
 
             return graph;
         }

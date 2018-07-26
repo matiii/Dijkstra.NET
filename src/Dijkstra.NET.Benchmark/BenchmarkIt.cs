@@ -3,10 +3,12 @@ using System.Linq;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Attributes.Jobs;
 using BenchmarkDotNet.Engines;
+using Dijkstra.NET.Extensions;
 
 namespace Dijkstra.NET.Benchmark
 {
     [SimpleJob(RunStrategy.Monitoring, launchCount: 1, warmupCount: 2, targetCount: 3)]
+    [MemoryDiagnoser]
     public class BenchmarkIt
     {
         private readonly DijkstraBenchmarkBase _dijkstra;
@@ -38,6 +40,14 @@ namespace Dijkstra.NET.Benchmark
         public int DijkstraBenchmark()
         {
             var result = _dijkstra.GetPath();
+
+            return result.GetPath().Count();
+        }
+
+        [Benchmark]
+        public int DijkstraExtensionBenchmark()
+        {
+            var result = DijkstraBenchmarkBase.Graph.Dijkstra(DijkstraBenchmarkBase.From, DijkstraBenchmarkBase.To);
 
             return result.GetPath().Count();
         }

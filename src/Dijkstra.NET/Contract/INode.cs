@@ -1,14 +1,17 @@
-﻿namespace Dijkstra.NET.Contract
-{
-    using System;
-    using System.Collections.Generic;
-    using Model;
+﻿using System;
+using Dijkstra.NET.Delegates;
 
+namespace Dijkstra.NET.Contract
+{
     public interface INode<T,TEdgeCustom> where TEdgeCustom : IEquatable<TEdgeCustom>
     {
-        IList<Edge<T, TEdgeCustom>> Children { get; }
         T Item { get; }
+
         uint Key { get; }
+
+        void EachChild(ChildAction<T, TEdgeCustom> action);
+
+        [Obsolete]
         int Distance { get; set; }
     }
 }

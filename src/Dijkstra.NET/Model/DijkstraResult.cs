@@ -5,6 +5,7 @@
     using System.Linq;
     using Contract;
 
+    [Obsolete]
     public class DijkstraResult: IShortestPathResult
     {
         private readonly uint _from;
