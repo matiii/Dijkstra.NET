@@ -13,7 +13,6 @@ namespace Dijkstra.NET.Model
         {
             Key = key;
             Item = item;
-            Distance = Int32.MaxValue;
             _children = new Edge<T, TEdgeCustom>[5];
         }
 
@@ -46,9 +45,6 @@ namespace Dijkstra.NET.Model
             _children[ChildrenCount] = edge;
             ChildrenCount++;
         }
-
-        [Obsolete]
-        public int Distance { get; set; }
 
         public void EachChild(ChildAction<T, TEdgeCustom> action)
         {

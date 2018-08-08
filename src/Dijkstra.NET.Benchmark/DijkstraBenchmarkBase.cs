@@ -44,12 +44,5 @@ namespace Dijkstra.NET.Benchmark
             From = 0;
             To = Nodes - 1;
         }
-
-        public void Setup()
-        {
-            Graph.Reset();
-        }
-
-        public abstract IShortestPathResult GetPath();
     }
 }

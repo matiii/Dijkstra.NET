@@ -6,7 +6,7 @@ using Dijkstra.NET.Contract;
 
 namespace Dijkstra.NET.Model
 {
-    public class Graph<T, TEdgeCustom>: IGraph<T, TEdgeCustom>, IEnumerable<INode<T, TEdgeCustom>>, ICloneable<Graph<T, TEdgeCustom>> where TEdgeCustom : IEquatable<TEdgeCustom>
+    public class Graph<T, TEdgeCustom>: IGraph<T, TEdgeCustom>, IEnumerable<INode<T, TEdgeCustom>> where TEdgeCustom : IEquatable<TEdgeCustom>
     {
         private readonly IDictionary<uint, Node<T, TEdgeCustom>> _nodes = new Dictionary<uint, Node<T, TEdgeCustom>>();
 
@@ -37,42 +37,9 @@ namespace Dijkstra.NET.Model
             return true;
         }
 
-        /// <summary>
-        /// Reset distance in nodes
-        /// </summary>
-        [Obsolete]
-        public void Reset()
-        {
-            foreach (var node in this)
-                node.Distance = Int32.MaxValue;
-        }
-
-        [Obsolete]
-        public bool HasToBeReset() => this.Any(x => x.Distance != Int32.MaxValue);
-
         public IEnumerator<INode<T, TEdgeCustom>> GetEnumerator() => _nodes.Select(x => x.Value).GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public INode<T, TEdgeCustom> this[uint node] => _nodes[node];
-
-        /// <summary>
-        /// Deep copy of graph
-        /// </summary>
-        /// <returns>new instance of graph</returns>
-        [Obsolete]
-        public Graph<T, TEdgeCustom> Clone()
-        {
-            var graph = new Graph<T, TEdgeCustom>();
-
-            foreach (var node in _nodes.Values)
-                graph.AddNode(node.Key, node.Item);
-
-            foreach (var node in _nodes.Values.Where(x => x.ChildrenCount > 0))
-            {
-                node.EachChild((in Edge<T, TEdgeCustom> edge) => graph.Connect(node.Key, edge.Node.Key, edge.Cost, edge.Item));
-            }
-
-            return graph;
-        }
     }
 }

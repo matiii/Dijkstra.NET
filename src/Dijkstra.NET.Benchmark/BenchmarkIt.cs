@@ -11,51 +11,26 @@ namespace Dijkstra.NET.Benchmark
     [MemoryDiagnoser]
     public class BenchmarkIt
     {
-        private readonly DijkstraBenchmarkBase _dijkstra;
-        private readonly DijkstraBenchmarkBase _bfs;
-
         public BenchmarkIt()
         {
-            _dijkstra = new DijkstraBenchmark();
-            _bfs = new BfsParallelBenchmark();
         }
 
         [GlobalSetup]
         public void Initialise()
         {
             Console.WriteLine("--- Global Setup ---");
-
-            _dijkstra.Initialise();
         }
 
         [IterationSetup]
         public void IterationSetup()
         {
             Console.WriteLine("--- Iteration Setup ---");
-
-            _dijkstra.Setup();
         }
 
         [Benchmark(Baseline = true)]
-        public int DijkstraBenchmark()
-        {
-            var result = _dijkstra.GetPath();
-
-            return result.GetPath().Count();
-        }
-
-        [Benchmark]
         public int DijkstraExtensionBenchmark()
         {
             var result = DijkstraBenchmarkBase.Graph.Dijkstra(DijkstraBenchmarkBase.From, DijkstraBenchmarkBase.To);
-
-            return result.GetPath().Count();
-        }
-
-        [Benchmark]
-        public int BfsBenchmark()
-        {
-            var result = _bfs.GetPath();
 
             return result.GetPath().Count();
         }
