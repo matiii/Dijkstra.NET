@@ -155,5 +155,31 @@ namespace Dijkstra.NET.Tests.Extensions
 
             Assert.False(result.IsFounded);
         }
+
+        [Fact]
+        public void Dijkstra_Should_Concern_Depth_In_Graph()
+        {
+            var graph = new Graph<int, string>();
+
+            graph.AddNode(0);
+            graph.AddNode(0);
+            graph.AddNode(0);
+            graph.AddNode(0);
+
+            graph.Connect(0, 1, 1, null);
+            graph.Connect(0, 2, 1, null);
+            graph.Connect(0, 3, 5, null);
+            graph.Connect(2, 3, 2, null);
+
+            var result = graph.Dijkstra(0, 3, 1);
+
+            Assert.True(result.IsFounded);
+            Assert.Equal(5, result.Distance);
+
+            uint[] path = result.GetPath().ToArray();
+
+            Assert.Equal((uint)0, path[0]);
+            Assert.Equal((uint)3, path[1]);
+        }
     }
 }

@@ -10,10 +10,16 @@ namespace Dijkstra.NET.Model
     {
         private readonly IDictionary<uint, Node<T, TEdgeCustom>> _nodes = new Dictionary<uint, Node<T, TEdgeCustom>>();
 
-        public void AddNode(T item)
+        /// <summary>
+        /// Add node to graph
+        /// </summary>
+        /// <param name="item">Node</param>
+        /// <returns>Key of node</returns>
+        public uint AddNode(T item)
         {
             uint key = (uint) _nodes.Count;
             AddNode(key, item);
+            return key;
         }
 
         protected void AddNode(uint key, T item)
@@ -24,6 +30,14 @@ namespace Dijkstra.NET.Model
             _nodes.Add(key, new Node<T, TEdgeCustom>(key, item));
         }
 
+        /// <summary>
+        /// Connect node from with node to
+        /// </summary>
+        /// <param name="from">First node</param>
+        /// <param name="to">Second node</param>
+        /// <param name="cost">Cost of connection</param>
+        /// <param name="custom">Information saved in edge</param>
+        /// <returns>Returns true if nodes connected</returns>
         public bool Connect(uint from, uint to, int cost, TEdgeCustom custom)
         {
             if (!_nodes.ContainsKey(from) || !_nodes.ContainsKey(to))
@@ -38,6 +52,7 @@ namespace Dijkstra.NET.Model
         }
 
         public IEnumerator<INode<T, TEdgeCustom>> GetEnumerator() => _nodes.Select(x => x.Value).GetEnumerator();
+
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public INode<T, TEdgeCustom> this[uint node] => _nodes[node];
