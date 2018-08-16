@@ -85,6 +85,20 @@ namespace Dijkstra.NET.Tests.Extensions
         }
 
         [Fact]
+        public void DijkstraGraphShould_Find_Path_With_One_Vertex_In_Graph_And_Depth_Zero()
+        {
+            var graph = new Graph<int, string>();
+            graph.AddNode(0);
+
+            var result = graph.Dijkstra(0, 0, 0);
+            uint[] path = result.GetPath().ToArray();
+
+            Assert.Equal<uint>(0, path[0]);
+            Assert.Equal(0, result.Distance);
+            Assert.True(result.IsFounded);
+        }
+
+        [Fact]
         public void DijkstraGraphShould_Find_Path_With_One_Vertex_And_One_Edge_In_Graph()
         {
             var graph = new Graph<int, string>();
@@ -154,6 +168,32 @@ namespace Dijkstra.NET.Tests.Extensions
             var result = graph.Dijkstra(0, 5);
 
             Assert.False(result.IsFounded);
+        }
+
+        [Fact]
+        public void Dijkstra_Should_Concern_Depth_In_Graph()
+        {
+            var graph = new Graph<int, string>();
+
+            graph.AddNode(0);
+            graph.AddNode(0);
+            graph.AddNode(0);
+            graph.AddNode(0);
+
+            graph.Connect(0, 1, 1, null);
+            graph.Connect(0, 2, 1, null);
+            graph.Connect(0, 3, 5, null);
+            graph.Connect(2, 3, 2, null);
+
+            var result = graph.Dijkstra(0, 3, 1);
+
+            Assert.True(result.IsFounded);
+            Assert.Equal(5, result.Distance);
+
+            uint[] path = result.GetPath().ToArray();
+
+            Assert.Equal((uint)0, path[0]);
+            Assert.Equal((uint)3, path[1]);
         }
     }
 }

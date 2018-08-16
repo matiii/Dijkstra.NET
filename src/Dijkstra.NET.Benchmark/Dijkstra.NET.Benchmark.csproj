@@ -137,8 +137,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BenchmarkIt.cs" />
-    <Compile Include="BfsParallelBenchmark.cs" />
-    <Compile Include="DijkstraBenchmark.cs" />
     <Compile Include="DijkstraBenchmarkBase.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

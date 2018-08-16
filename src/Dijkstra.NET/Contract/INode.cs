@@ -10,8 +10,5 @@ namespace Dijkstra.NET.Contract
         uint Key { get; }
 
         void EachChild(ChildAction<T, TEdgeCustom> action);
-
-        [Obsolete]
-        int Distance { get; set; }
     }
 }
