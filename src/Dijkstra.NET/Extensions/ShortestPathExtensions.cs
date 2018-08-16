@@ -26,13 +26,14 @@ namespace Dijkstra.NET.Extensions
         /// <param name="to">End node</param>
         /// <param name="depth">Depth of path</param>
         /// <returns>Value with path</returns>
-        public static ShortestPathResult Dijkstra<T, TEdgeCustom>(this IGraph<T, TEdgeCustom> graph, uint from, uint to, int depth)
+        public static ShortestPathResult Dijkstra<T, TEdgeCustom>(this IGraph<T, TEdgeCustom> graph, uint from, uint to,
+            int depth)
             where TEdgeCustom : IEquatable<TEdgeCustom>
         {
             var path = new Dictionary<uint, uint>();
-            var distance = new Dictionary<uint, int> { [from] = 0 };
-            var d = new Dictionary<uint, int> { [from] = 0 };
-            var q = new SortedSet<uint>(new[] { from }, new NodeComparer(distance));
+            var distance = new Dictionary<uint, int> {[from] = 0};
+            var d = new Dictionary<uint, int> {[from] = 0};
+            var q = new SortedSet<uint>(new[] {from}, new NodeComparer(distance));
             var current = new HashSet<uint>();
 
             int Distance(uint key)
@@ -40,7 +41,7 @@ namespace Dijkstra.NET.Extensions
                 return distance.ContainsKey(key) ? distance[key] : Int32.MaxValue;
             }
 
-            while (q.Count > 0)
+            do
             {
                 uint u = q.Deque();
 
@@ -72,7 +73,8 @@ namespace Dijkstra.NET.Extensions
                         d[e.Node.Key] = d[u] + 1;
                     }
                 });
-            }
+
+            } while (q.Count > 0 && depth > 0);
 
             return new ShortestPathResult(from, to);
         }

@@ -85,6 +85,20 @@ namespace Dijkstra.NET.Tests.Extensions
         }
 
         [Fact]
+        public void DijkstraGraphShould_Find_Path_With_One_Vertex_In_Graph_And_Depth_Zero()
+        {
+            var graph = new Graph<int, string>();
+            graph.AddNode(0);
+
+            var result = graph.Dijkstra(0, 0, 0);
+            uint[] path = result.GetPath().ToArray();
+
+            Assert.Equal<uint>(0, path[0]);
+            Assert.Equal(0, result.Distance);
+            Assert.True(result.IsFounded);
+        }
+
+        [Fact]
         public void DijkstraGraphShould_Find_Path_With_One_Vertex_And_One_Edge_In_Graph()
         {
             var graph = new Graph<int, string>();
