@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Dijkstra.NET.Utility
+namespace Dijkstra.NET.ShortestPath
 {
     internal class NodeComparer : IComparer<uint>
     {

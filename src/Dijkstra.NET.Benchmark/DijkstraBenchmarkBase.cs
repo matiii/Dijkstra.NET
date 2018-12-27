@@ -1,6 +1,5 @@
 ﻿using System;
-using Dijkstra.NET.Contract;
-using Dijkstra.NET.Model;
+using Dijkstra.NET.Graph;
 
 namespace Dijkstra.NET.Benchmark
 {

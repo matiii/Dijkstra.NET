@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Dijkstra.NET.Contract;
 
-namespace Dijkstra.NET.Model
+namespace Dijkstra.NET.Graph
 {
     public readonly struct Edge<T, TCustom>: IEquatable<Edge<T, TCustom>> where TCustom: IEquatable<TCustom>
     {

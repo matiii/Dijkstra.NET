@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using Dijkstra.NET.Extensions;
-using Dijkstra.NET.Model;
+using Dijkstra.NET.Graph;
+using Dijkstra.NET.ShortestPath;
 using Xunit;
 
 namespace Dijkstra.NET.Tests.Extensions

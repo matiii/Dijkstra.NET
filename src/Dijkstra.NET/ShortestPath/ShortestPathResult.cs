@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Dijkstra.NET.Model
+namespace Dijkstra.NET.ShortestPath
 {
     public readonly struct ShortestPathResult
     {
@@ -24,7 +24,7 @@ namespace Dijkstra.NET.Model
 
         public uint ToNode { get; }
 
-        public bool IsFounded => Distance != Int32.MaxValue;
+        public bool IsFounded => _path != null;
 
         public IEnumerable<uint> GetReversePath()
         {

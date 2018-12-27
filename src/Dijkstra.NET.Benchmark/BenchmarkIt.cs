@@ -3,7 +3,7 @@ using System.Linq;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Attributes.Jobs;
 using BenchmarkDotNet.Engines;
-using Dijkstra.NET.Extensions;
+using Dijkstra.NET.ShortestPath;
 
 namespace Dijkstra.NET.Benchmark
 {
