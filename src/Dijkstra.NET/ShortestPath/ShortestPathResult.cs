@@ -47,5 +47,10 @@ namespace Dijkstra.NET.ShortestPath
         }
 
         public IEnumerable<uint> GetPath() => GetReversePath().Reverse();
+
+        public override string ToString()
+        {
+            return $"({FromNode})-[{Distance}]->({ToNode})";
+        }
     }
 }
