@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard1.3;net40</TargetFrameworks>
-    <Version>1.1.0</Version>
+    <Version>1.2.0</Version>
     <Authors>Mateusz Mazurek</Authors>
     <Company />
     <Description>High performance the shortest path in directed graph with non negative weights algorithm implementation.</Description>

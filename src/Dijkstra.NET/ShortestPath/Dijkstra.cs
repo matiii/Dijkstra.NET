@@ -1,33 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using Dijkstra.NET.Contract;
-using Dijkstra.NET.Model;
-using Dijkstra.NET.Utility;
+using Dijkstra.NET.Graph;
 
-namespace Dijkstra.NET.Extensions
+namespace Dijkstra.NET.ShortestPath
 {
-    public static class ShortestPathExtensions
+    internal static class Dijkstra
     {
-        /// <summary>
-        /// Get path from @from to @to
-        /// </summary>
-        /// <param name="graph">Source graph</param>
-        /// <param name="from">Start node</param>
-        /// <param name="to">End node</param>
-        /// <returns>Value with path</returns>
-        public static ShortestPathResult Dijkstra<T, TEdgeCustom>(this IGraph<T, TEdgeCustom> graph, uint from, uint to)
-            where TEdgeCustom : IEquatable<TEdgeCustom> => Dijkstra(graph, from, to, Int32.MaxValue);
-
-        /// <summary>
-        /// Get path from @from to @to
-        /// </summary>
-        /// <param name="graph">Source graph</param>
-        /// <param name="from">Start node</param>
-        /// <param name="to">End node</param>
-        /// <param name="depth">Depth of path</param>
-        /// <returns>Value with path</returns>
-        public static ShortestPathResult Dijkstra<T, TEdgeCustom>(this IGraph<T, TEdgeCustom> graph, uint from, uint to,
-            int depth)
+        public static ShortestPathResult GetShortestPath<T, TEdgeCustom>(IGraph<T, TEdgeCustom> graph, uint from, uint to,
+            int depth, int modulo = 1, int r = 0)
             where TEdgeCustom : IEquatable<TEdgeCustom>
         {
             var path = new Dictionary<uint, uint>();
@@ -59,7 +39,7 @@ namespace Dijkstra.NET.Extensions
 
                 graph[u].EachChild((in Edge<T, TEdgeCustom> e) =>
                 {
-                    if (Distance(e.Node.Key) > Distance(u) + e.Cost)
+                    if (e.Node.Key % modulo == r && Distance(e.Node.Key) > Distance(u) + e.Cost)
                     {
                         if (current.Contains(e.Node.Key))
                         {

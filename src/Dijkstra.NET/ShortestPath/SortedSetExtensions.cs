@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Dijkstra.NET.Extensions
+namespace Dijkstra.NET.ShortestPath
 {
     internal static class SortedSetExtensions
     {

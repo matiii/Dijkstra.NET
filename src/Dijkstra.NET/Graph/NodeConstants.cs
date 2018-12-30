@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Dijkstra.NET.Constants
+namespace Dijkstra.NET.Graph
 {
     internal class NodeConstants
     {

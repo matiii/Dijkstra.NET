@@ -1,4 +1,4 @@
-﻿using Dijkstra.NET.Model;
+﻿using Dijkstra.NET.Graph;
 using Xunit;
 
 namespace Dijkstra.NET.Tests

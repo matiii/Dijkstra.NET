@@ -2,9 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Dijkstra.NET.Contract;
 
-namespace Dijkstra.NET.Model
+namespace Dijkstra.NET.Graph
 {
     public class Graph<T, TEdgeCustom>: IGraph<T, TEdgeCustom>, IEnumerable<INode<T, TEdgeCustom>> where TEdgeCustom : IEquatable<TEdgeCustom>
     {

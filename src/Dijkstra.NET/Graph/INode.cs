@@ -1,7 +1,6 @@
 ﻿using System;
-using Dijkstra.NET.Delegates;
 
-namespace Dijkstra.NET.Contract
+namespace Dijkstra.NET.Graph
 {
     public interface INode<T,TEdgeCustom> where TEdgeCustom : IEquatable<TEdgeCustom>
     {

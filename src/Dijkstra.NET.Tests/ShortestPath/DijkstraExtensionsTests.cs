@@ -1,11 +1,11 @@
 ﻿using System.Linq;
-using Dijkstra.NET.Extensions;
-using Dijkstra.NET.Model;
+using Dijkstra.NET.Graph;
+using Dijkstra.NET.ShortestPath;
 using Xunit;
 
-namespace Dijkstra.NET.Tests.Extensions
+namespace Dijkstra.NET.Tests.ShortestPath
 {
-    public class ShortestPathExtensionsTests
+    public class DijkstraExtensionsTests
     {
         [Fact]
         public void DijkstraGraphShould_Find_Path_In_Multi_Paths_Graph()

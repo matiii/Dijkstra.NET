@@ -1,5 +1,5 @@
-﻿using Dijkstra.NET.Extensions;
-using Dijkstra.NET.Model;
+﻿using Dijkstra.NET.Graph;
+using Dijkstra.NET.ShortestPath;
 
 namespace Dijkstra.Net40
 {
