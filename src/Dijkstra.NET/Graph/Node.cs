@@ -1,31 +1,50 @@
 ﻿using System;
+using System.Collections.Generic;
+using Dijkstra.NET.PageRank;
+using Dijkstra.NET.ShortestPath;
 
 namespace Dijkstra.NET.Graph
 {
-    public class Node<T, TEdgeCustom>: INode<T, TEdgeCustom> where TEdgeCustom: IEquatable<TEdgeCustom>
+    public class Node<T, TEdgeCustom>: IPageRank, IDijkstra, INode<T, TEdgeCustom> where TEdgeCustom: IEquatable<TEdgeCustom>
     {
-        private Edge<T, TEdgeCustom>[] _children;
+        private readonly HashSet<Node<T,TEdgeCustom>> _parents = new HashSet<Node<T, TEdgeCustom>>();
+        private readonly HashSet<uint> _children = new HashSet<uint>();
+        private Edge<T, TEdgeCustom>[] _edges;
 
         public Node(uint key, T item)
         {
             Key = key;
             Item = item;
-            _children = new Edge<T, TEdgeCustom>[5];
+            _edges = new Edge<T, TEdgeCustom>[5];
         }
 
         public uint Key { get; }
 
         public T Item { get; }
 
-        public int ChildrenCount { get; internal set; }
+        public int EdgesCount { get; internal set; }
+        
+        public int NumberOfEdges => _children.Count;
 
-        internal void AddChild(in Edge<T, TEdgeCustom> edge)
+        public IEnumerable<IPageRank> Parents => _parents;
+
+        public void EachEdge(Edge edge)
         {
-            if (_children.Length == ChildrenCount)
+            for (int i = 0; i < EdgesCount; i++)
             {
-                int newSize = _children.Length;
+                ref Edge<T, TEdgeCustom> e = ref _edges[i];
 
-                if (ChildrenCount < NodeConstants.MaxSize)
+                edge(e.Node.Key, e.Cost);
+            }
+        }
+        
+        internal void AddEdge(in Edge<T, TEdgeCustom> edge)
+        {
+            if (_edges.Length == EdgesCount)
+            {
+                int newSize = _edges.Length;
+
+                if (EdgesCount < NodeConstants.MaxSize)
                 {
                     newSize *= 2;
                 }
@@ -36,21 +55,34 @@ namespace Dijkstra.NET.Graph
                     newSize = bigSize < Int32.MaxValue ? (int)bigSize : Int32.MaxValue;
                 }
 
-                Array.Resize(ref _children, newSize);
+                Array.Resize(ref _edges, newSize);
             }
 
-            _children[ChildrenCount] = edge;
-            ChildrenCount++;
+            _edges[EdgesCount] = edge;
+            EdgesCount++;
+            _children.Add(edge.Node.Key);
         }
 
-        public void EachChild(ChildAction<T, TEdgeCustom> action)
+        internal void AddParent(Node<T, TEdgeCustom> parent)
         {
-            for (int i = 0; i < ChildrenCount; i++)
-            {
-                ref Edge<T, TEdgeCustom> e = ref _children[i];
+            _parents.Add(parent);
+        }
 
-                action(in e);
-            }
+        public override int GetHashCode()
+        {
+            return Key.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            var node = obj as INode;
+
+            return node?.Key == Key;
+        }
+
+        public override string ToString()
+        {
+            return $"[{Key}({Item?.ToString()})]";
         }
     }
 }

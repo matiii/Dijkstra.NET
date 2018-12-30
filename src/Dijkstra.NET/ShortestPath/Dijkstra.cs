@@ -6,9 +6,7 @@ namespace Dijkstra.NET.ShortestPath
 {
     internal static class Dijkstra
     {
-        public static ShortestPathResult GetShortestPath<T, TEdgeCustom>(IGraph<T, TEdgeCustom> graph, uint from, uint to,
-            int depth, int modulo = 1, int r = 0)
-            where TEdgeCustom : IEquatable<TEdgeCustom>
+        public static ShortestPathResult GetShortestPath(IDijkstraGraph graph, uint from, uint to, int depth)
         {
             var path = new Dictionary<uint, uint>();
             var distance = new Dictionary<uint, int> {[from] = 0};
@@ -37,20 +35,20 @@ namespace Dijkstra.NET.ShortestPath
                     continue;
                 }
 
-                graph[u].EachChild((in Edge<T, TEdgeCustom> e) =>
+                graph[u].EachEdge((node, cost) =>
                 {
-                    if (e.Node.Key % modulo == r && Distance(e.Node.Key) > Distance(u) + e.Cost)
+                    if (Distance(node) > Distance(u) + cost)
                     {
-                        if (current.Contains(e.Node.Key))
+                        if (current.Contains(node))
                         {
-                            q.Remove(e.Node.Key);
+                            q.Remove(node);
                         }
 
-                        distance[e.Node.Key] = Distance(u) + e.Cost;
-                        q.Add(e.Node.Key);
-                        current.Add(e.Node.Key);
-                        path[e.Node.Key] = u;
-                        d[e.Node.Key] = d[u] + 1;
+                        distance[node] = Distance(u) + cost;
+                        q.Add(node);
+                        current.Add(node);
+                        path[node] = u;
+                        d[node] = d[u] + 1;
                     }
                 });
 
