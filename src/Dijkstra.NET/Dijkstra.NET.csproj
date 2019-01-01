@@ -2,11 +2,10 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard1.3;net40</TargetFrameworks>
-    <Version>1.2.0</Version>
+    <Version>1.2.1</Version>
     <Authors>Mateusz Mazurek</Authors>
     <Company />
     <Description>Graph processing library.</Description>
-    <PackageLicenseUrl>https://github.com/matiii/Dijkstra.NET/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/matiii/Dijkstra.NET</PackageProjectUrl>
     <RepositoryUrl>https://github.com/matiii/Dijkstra.NET</RepositoryUrl>
     <PackageTags>graphs graph-theory dijkstra page-rank</PackageTags>

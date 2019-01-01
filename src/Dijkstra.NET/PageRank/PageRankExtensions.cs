@@ -15,17 +15,13 @@ namespace Dijkstra.NET.PageRank
         {
             var pageRank = new Dictionary<uint, double>();
             var pageRankNext = new Dictionary<uint, double>();
-            
-            // 0
-            foreach (var node in graph)
-            {
-                pageRank[node.Key] = 1.0 / graph.NodesCount;
-            }
 
+            double initPr = 1.0 / graph.NodesCount;
+            
             // 1
             foreach (var node in graph)
             {
-                pageRankNext[node.Key] = (1 - d) / graph.NodesCount + d * node.Parents.Sum(x => pageRank[x.Key] / x.NumberOfEdges);
+                pageRankNext[node.Key] = (1 - d) / graph.NodesCount + d * node.Parents.Sum(x => initPr / x.NumberOfEdges);
             }
 
             // 2
