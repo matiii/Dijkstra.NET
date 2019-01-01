@@ -1,4 +1,4 @@
-# Dijkstra.NET Dijkstra algorithm in C&#35; [![NuGet Version](https://img.shields.io/badge/Dijkstra.NET-1.2.0-blue.svg)](https://www.nuget.org/packages/Dijkstra.NET)
+# Dijkstra.NET [![NuGet Version](https://img.shields.io/badge/Dijkstra.NET-1.2.0-blue.svg)](https://www.nuget.org/packages/Dijkstra.NET)
 
 Dijkstra algorithm which use priority queue thus complexity is equal O(ElogV) where E is number of edges and V is number of vertices. Used data structures are based on interfaces so you can implement your own or reused present. Simply example below. More information about algorithm you can find on [Wikipedia](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm).
 
@@ -12,23 +12,38 @@ Install the latest version from NuGet
 ## Simple example
 
 ```c#
-using Dijkstra.NET.Extensions;
+using Dijkstra.NET.Graph;
+using Dijkstra.NET.ShortestPath;
 
 var graph = new Graph<int, string>();
 
 graph.AddNode(1);
 graph.AddNode(2);
 
-graph.Connect(0, 1, 5, "some custom information in edge"); //First node has key equal 0
+graph.Connect(1, 2, 5, "some custom information in edge"); //First node has key equal 1
 
 ShortestPathResult result = graph.Dijkstra(0, 1); //result contains the shortest path
 
-result.GetPath();
+var path = result.GetPath();
+```
+or
+
+```c#
+using Dijkstra.NET.Graph;
+using Dijkstra.NET.ShortestPath;
+
+var graph = new Graph<int, string>() + 1 + 2;
+
+bool connected = graph >> 1 >> 2 >> 5 ^ "custome edge information"; 
+
+ShortestPathResult result = graph.Dijkstra(1, 2); //result contains the shortest path
+
+var path = result.GetPath();
 ```
 
 ## Benchmark
 
-For Graph where number of nodes is 10 000 000 and connections between them 1 000 000. The length of path is minimum 10.
+For Graph where number of nodes is 1 000 000 and connections between them 1 000 000. The length of path is minimum 10.
 
 ``` ini
 
