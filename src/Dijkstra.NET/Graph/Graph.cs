@@ -14,21 +14,36 @@ namespace Dijkstra.NET.Graph
         /// <summary>
         /// Add node to graph
         /// </summary>
+        /// <param name="graph">Graph</param>
+        /// <param name="item">Item of node</param>
+        /// <returns></returns>
+        public static Graph<T, TEdgeCustom> operator +(Graph<T, TEdgeCustom> graph, T item)
+        {
+            graph.AddNode(item);
+            return graph;
+        }
+
+        /// <summary>
+        /// Get node from graph
+        /// </summary>
+        /// <param name="graph">Graph</param>
+        /// <param name="node">Key of node</param>
+        /// <returns>Node of graph</returns>
+        public static Node<T, TEdgeCustom> operator >>(Graph<T, TEdgeCustom> graph, int node)
+        {
+            return (Node<T, TEdgeCustom>) graph[(uint)node];
+        }
+        
+        /// <summary>
+        /// Add node to graph
+        /// </summary>
         /// <param name="item">Node</param>
         /// <returns>Key of node</returns>
         public uint AddNode(T item)
         {
-            uint key = (uint) _nodes.Count;
+            uint key = (uint) _nodes.Count + 1;
             AddNode(key, item);
             return key;
-        }
-
-        protected void AddNode(uint key, T item)
-        {
-            if (_nodes.ContainsKey(key))
-                throw new InvalidOperationException("Node have to be unique.", new Exception("The same key of node."));
-
-            _nodes.Add(key, new Node<T, TEdgeCustom>(key, item));
         }
 
         /// <summary>
@@ -66,5 +81,18 @@ namespace Dijkstra.NET.Graph
         IPageRank IPageRankGraph.this[uint node] => _nodes[node];
 
         IDijkstra IDijkstraGraph.this[uint node] => _nodes[node];
+
+        public override string ToString()
+        {
+            return $"Graph({_nodes.Count})";
+        }
+        
+        protected void AddNode(uint key, T item)
+        {
+            if (_nodes.ContainsKey(key))
+                throw new InvalidOperationException("Node have to be unique.", new Exception("The same key of node."));
+
+            _nodes.Add(key, new Node<T, TEdgeCustom>(key, item, this));
+        }
     }
 }

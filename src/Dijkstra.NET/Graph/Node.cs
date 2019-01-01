@@ -11,13 +11,25 @@ namespace Dijkstra.NET.Graph
         private readonly HashSet<uint> _children = new HashSet<uint>();
         private Edge<T, TEdgeCustom>[] _edges;
 
-        public Node(uint key, T item)
+        internal Node(uint key, T item, Graph<T, TEdgeCustom> graph)
         {
             Key = key;
             Item = item;
             _edges = new Edge<T, TEdgeCustom>[5];
+            Graph = graph;
         }
 
+        /// <summary>
+        /// Connect node with node
+        /// </summary>
+        /// <param name="nodeFrom">Node from</param>
+        /// <param name="nodeTo">Node to</param>
+        /// <returns>Temporal edge</returns>
+        public static EdgeTemp<T, TEdgeCustom> operator>>(Node<T, TEdgeCustom> nodeFrom, int nodeTo)
+        {
+            return new EdgeTemp<T, TEdgeCustom>(nodeFrom.Key, (uint) nodeTo, nodeFrom.Graph);
+        }
+        
         public uint Key { get; }
 
         public T Item { get; }
@@ -28,6 +40,8 @@ namespace Dijkstra.NET.Graph
 
         public IEnumerable<IPageRank> Parents => _parents;
 
+        internal Graph<T, TEdgeCustom> Graph { get; }
+        
         public void EachEdge(Edge edge)
         {
             for (int i = 0; i < EdgesCount; i++)

@@ -3,18 +3,25 @@ using Dijkstra.NET.Graph;
 
 namespace Dijkstra.NET.Benchmark
 {
-    public abstract class DijkstraBenchmarkBase
+    public abstract class BenchmarkBase
     {
-        public static readonly Graph<int, string> Graph = new Graph<int, string>();
+        public  Graph<int, string> Graph { get; set; }
 
-        private const int Nodes = 10_000_000;
+        private const int Nodes = 1_000_000;
         private const int Connections = 1_000_000;
 
-        public static uint From { get; private set; }
-        public static uint To { get; private set; }
+        public static uint First { get; private set; }
+        public static uint Last { get; private set; }
 
-        public void Initialise()
+        public void InitialiseGraph()
         {
+            if (Graph != null)
+            {
+                return;
+            }
+            
+            Graph = new Graph<int, string>();
+            
             for (int i = 0; i < Nodes; i++)
                 Graph.AddNode(i);
 
@@ -22,14 +29,14 @@ namespace Dijkstra.NET.Benchmark
 
             for (int i = 0; i < Connections; i++)
             {
-                int node1 = random.Next(0, Nodes);
-                int node2 = random.Next(0, Nodes);
+                int node1 = random.Next(1, Nodes);
+                int node2 = random.Next(2, Nodes);
                 int cost = random.Next(15, 50);
 
                 Graph.Connect((uint)node1, (uint)node2, cost, null);
             }
 
-            Graph.Connect(0, 5, 10000000, null);
+            Graph.Connect(1, 5, 10000000, null);
             Graph.Connect(5, 121, 10000000, null);
             Graph.Connect(121, 115, 10000000, null);
             Graph.Connect(115, 300, 10000000, null);
@@ -40,8 +47,8 @@ namespace Dijkstra.NET.Benchmark
             Graph.Connect(50, 21, 10000000, null);
             Graph.Connect(21, Nodes - 1, 10000000, null);
 
-            From = 0;
-            To = Nodes - 1;
+            First = 1;
+            Last = Nodes - 1;
         }
     }
 }

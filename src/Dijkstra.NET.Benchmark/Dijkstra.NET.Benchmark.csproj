@@ -137,7 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BenchmarkIt.cs" />
-    <Compile Include="DijkstraBenchmarkBase.cs" />
+    <Compile Include="BenchmarkBase.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

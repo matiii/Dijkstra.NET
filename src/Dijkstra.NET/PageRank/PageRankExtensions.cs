@@ -5,31 +5,36 @@ namespace Dijkstra.NET.PageRank
 {
     public static class PageRankExtensions
     {
+        /// <summary>
+        /// Calculate page rank for graph
+        /// </summary>
+        /// <param name="graph">Source graph</param>
+        /// <param name="d">Damping factor</param>
+        /// <returns>Calculated page rank</returns>
         public static PageRankResult CalculatePageRank(this IPageRankGraph graph, double d = 0.85)
         {
-            var pageRank0 = new Dictionary<uint, double>();
-            var pageRank1 = new Dictionary<uint, double>();
-            var pageRank2 = new Dictionary<uint, double>();
+            var pageRank = new Dictionary<uint, double>();
+            var pageRankNext = new Dictionary<uint, double>();
             
             // 0
             foreach (var node in graph)
             {
-                pageRank0[node.Key] = 1.0 / graph.NodesCount;
+                pageRank[node.Key] = 1.0 / graph.NodesCount;
             }
 
             // 1
             foreach (var node in graph)
             {
-                pageRank1[node.Key] = (1 - d) / graph.NodesCount + d * node.Parents.Sum(x => pageRank0[x.Key] / x.NumberOfEdges);
+                pageRankNext[node.Key] = (1 - d) / graph.NodesCount + d * node.Parents.Sum(x => pageRank[x.Key] / x.NumberOfEdges);
             }
 
             // 2
             foreach (var node in graph)
             {
-                pageRank2[node.Key] = (1 - d) / graph.NodesCount + d * node.Parents.Sum(x => pageRank1[x.Key] / x.NumberOfEdges);
+                pageRank[node.Key] = (1 - d) / graph.NodesCount + d * node.Parents.Sum(x => pageRankNext[x.Key] / x.NumberOfEdges);
             }
 
-            return new PageRankResult(pageRank2);
+            return new PageRankResult(pageRank);
         }
     }
 }
