@@ -3,13 +3,14 @@ using System.Linq;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Attributes.Jobs;
 using BenchmarkDotNet.Engines;
+using Dijkstra.NET.PageRank;
 using Dijkstra.NET.ShortestPath;
 
 namespace Dijkstra.NET.Benchmark
 {
     [SimpleJob(RunStrategy.Monitoring, launchCount: 1, warmupCount: 2, targetCount: 3)]
     [MemoryDiagnoser]
-    public class BenchmarkIt
+    public class BenchmarkIt : BenchmarkBase
     {
         public BenchmarkIt()
         {
@@ -19,6 +20,7 @@ namespace Dijkstra.NET.Benchmark
         public void Initialise()
         {
             Console.WriteLine("--- Global Setup ---");
+            InitialiseGraph();
         }
 
         [IterationSetup]
@@ -30,9 +32,17 @@ namespace Dijkstra.NET.Benchmark
         [Benchmark(Baseline = true)]
         public int DijkstraExtensionBenchmark()
         {
-            var result = DijkstraBenchmarkBase.Graph.Dijkstra(DijkstraBenchmarkBase.From, DijkstraBenchmarkBase.To);
+            var result = Graph.Dijkstra(BenchmarkBase.First, BenchmarkBase.Last);
 
             return result.GetPath().Count();
+        }
+        
+        [Benchmark]
+        public double PageRankExtensionBenchmark()
+        {
+            var result = Graph.CalculatePageRank();
+
+            return result[BenchmarkBase.First];
         }
     }
 }

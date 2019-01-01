@@ -5,11 +5,15 @@ namespace Dijkstra.NET.Tests
 {
     public class EdgeTest
     {
+        
         [Fact]
         public void Two_Edges_Should_Be_Equal()
         {
-            var a = new Edge<string, int>(new Node<string, int>(0, "node1"), 1, 1);
-            var b = new Edge<string, int>(new Node<string, int>(0, "node2"),1, 1);
+            var g = new Graph<string, int>() + "node1";
+            var n = g >> 1;
+            
+            var a = new Edge<string, int>(n, 1, 1);
+            var b = new Edge<string, int>(n,1, 1);
 
             bool act = a.Equals(b);
 
@@ -19,8 +23,11 @@ namespace Dijkstra.NET.Tests
         [Fact]
         public void Two_Edges_Should_Be_Equal_With_Null_References()
         {
-            var a = new Edge<string, string>(new Node<string, string>(0, "node1"), 1, null);
-            var b = new Edge<string, string>(new Node<string, string>(0, "node2"),1, null);
+            var g = new Graph<string, string>() + "node1";
+            var n = g >> 1;
+            
+            var a = new Edge<string, string>(n, 1, null);
+            var b = new Edge<string, string>(n,1, null);
 
             bool act = a.Equals(b);
 
@@ -30,8 +37,11 @@ namespace Dijkstra.NET.Tests
         [Fact]
         public void Two_Edges_Should_Be_Diffrent_With_Null_Reference()
         {
-            var a = new Edge<string, string>(new Node<string, string>(0, "node1"), 1, null);
-            var b = new Edge<string, string>(new Node<string, string>(0, "node2"),1, "a");
+            var g = new Graph<string, string>() + "node1";
+            var n = g >> 1;
+            
+            var a = new Edge<string, string>(n, 1, null);
+            var b = new Edge<string, string>(n,1, "a");
 
             bool act = a.Equals(b);
             bool act2 = b.Equals(a);
@@ -43,8 +53,11 @@ namespace Dijkstra.NET.Tests
         [Fact]
         public void Two_Edges_Should_Be_Diffrent_With_Diffrent_Parameter()
         {
-            var a = new Edge<string, string>(new Node<string, string>(0, "node1"), 1, "b");
-            var b = new Edge<string, string>(new Node<string, string>(0, "node2"),1, "a");
+            var g = new Graph<string, string>() + "node1";
+            var n = g >> 1;
+            
+            var a = new Edge<string, string>(n, 1, "b");
+            var b = new Edge<string, string>(n,1, "a");
 
             bool act = a.Equals(b);
             bool act2 = b.Equals(a);
@@ -56,8 +69,11 @@ namespace Dijkstra.NET.Tests
         [Fact]
         public void Two_Edges_Should_Be_Diffrent_With_Diffrent_Costs()
         {
-            var a = new Edge<string, string>(new Node<string, string>(0, "node1"), 3, "a");
-            var b = new Edge<string, string>(new Node<string, string>(0, "node2"),1, "a");
+            var g = new Graph<string, string>() + "node1";
+            var n = g >> 1;
+            
+            var a = new Edge<string, string>(n, 3, "a");
+            var b = new Edge<string, string>(n,1, "a");
 
             bool act = a.Equals(b);
             bool act2 = b.Equals(a);
@@ -69,8 +85,12 @@ namespace Dijkstra.NET.Tests
         [Fact]
         public void Two_Edges_Should_Be_Diffrent_With_Diffrent_Nodes()
         {
-            var a = new Edge<string, string>(new Node<string, string>(0, "node1"), 1, "a");
-            var b = new Edge<string, string>(new Node<string, string>(1, "node2"),1, "a");
+            var g = new Graph<string, string>() + "node1" + "node2";
+            var n1 = g >> 1;
+            var n2 = g >> 2;
+            
+            var a = new Edge<string, string>(n1, 1, "a");
+            var b = new Edge<string, string>(n2,1, "a");
 
             bool act = a.Equals(b);
             bool act2 = b.Equals(a);

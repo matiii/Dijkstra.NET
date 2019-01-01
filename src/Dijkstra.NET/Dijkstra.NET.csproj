@@ -5,11 +5,11 @@
     <Version>1.2.0</Version>
     <Authors>Mateusz Mazurek</Authors>
     <Company />
-    <Description>High performance the shortest path in directed graph with non negative weights algorithm implementation.</Description>
+    <Description>Graph processing library.</Description>
     <PackageLicenseUrl>https://github.com/matiii/Dijkstra.NET/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/matiii/Dijkstra.NET</PackageProjectUrl>
     <RepositoryUrl>https://github.com/matiii/Dijkstra.NET</RepositoryUrl>
-    <PackageTags>graphs dijkstra bfs</PackageTags>
+    <PackageTags>graphs graph-theory dijkstra page-rank</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
