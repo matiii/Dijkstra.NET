@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Dijkstra.NET.PageRank;
 using Dijkstra.NET.ShortestPath;
-
+using System.Linq;
 namespace Dijkstra.NET.Graph
 {
     public class Node<T, TEdgeCustom>: IPageRank, IDijkstra, INode<T, TEdgeCustom> where TEdgeCustom: IEquatable<TEdgeCustom>
@@ -51,7 +51,17 @@ namespace Dijkstra.NET.Graph
                 edge(e.Node.Key, e.Cost);
             }
         }
-        
+        /// <summary>
+        /// Get custom info from node edges by edge key
+        /// </summary>
+        /// <param name="nodeEdgeKey">edge key</param>
+        /// <returns>TEdgeCustom</returns>
+        public TEdgeCustom GetEdgeCustom(int nodeEdgeKey)
+        {
+            return _edges.FirstOrDefault(c => c.Node.Key == nodeEdgeKey).Item;
+        }
+      
+
         internal void AddEdge(in Edge<T, TEdgeCustom> edge)
         {
             if (_edges.Length == EdgesCount)
