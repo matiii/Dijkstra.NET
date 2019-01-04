@@ -7,15 +7,15 @@ namespace Dijkstra.NET.Graph
 {
     public class Node<T, TEdgeCustom>: IPageRank, IDijkstra, INode<T, TEdgeCustom> where TEdgeCustom: IEquatable<TEdgeCustom>
     {
+        public Edge<T, TEdgeCustom>[] Edges;
         private readonly HashSet<Node<T,TEdgeCustom>> _parents = new HashSet<Node<T, TEdgeCustom>>();
         private readonly HashSet<uint> _children = new HashSet<uint>();
-        private Edge<T, TEdgeCustom>[] _edges;
 
         internal Node(uint key, T item, Graph<T, TEdgeCustom> graph)
         {
             Key = key;
             Item = item;
-            _edges = new Edge<T, TEdgeCustom>[5];
+            Edges = new Edge<T, TEdgeCustom>[5];
             Graph = graph;
         }
 
@@ -46,7 +46,7 @@ namespace Dijkstra.NET.Graph
         {
             for (int i = 0; i < EdgesCount; i++)
             {
-                ref Edge<T, TEdgeCustom> e = ref _edges[i];
+                ref Edge<T, TEdgeCustom> e = ref Edges[i];
 
                 edge(e.Node.Key, e.Cost);
             }
@@ -58,15 +58,15 @@ namespace Dijkstra.NET.Graph
         /// <returns>TEdgeCustom</returns>
         public TEdgeCustom GetFirstEdgeCustom(int nodeEdgeKey)
         {
-            return _edges.First(c => c.Node.Key == nodeEdgeKey).Item;
+            return Edges.First(c => c.Node.Key == nodeEdgeKey).Item;
         }
       
 
         internal void AddEdge(in Edge<T, TEdgeCustom> edge)
         {
-            if (_edges.Length == EdgesCount)
+            if (Edges.Length == EdgesCount)
             {
-                int newSize = _edges.Length;
+                int newSize = Edges.Length;
 
                 if (EdgesCount < NodeConstants.MaxSize)
                 {
@@ -79,10 +79,10 @@ namespace Dijkstra.NET.Graph
                     newSize = bigSize < Int32.MaxValue ? (int)bigSize : Int32.MaxValue;
                 }
 
-                Array.Resize(ref _edges, newSize);
+                Array.Resize(ref Edges, newSize);
             }
 
-            _edges[EdgesCount] = edge;
+            Edges[EdgesCount] = edge;
             EdgesCount++;
             _children.Add(edge.Node.Key);
         }
