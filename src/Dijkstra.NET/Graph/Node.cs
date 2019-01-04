@@ -56,9 +56,9 @@ namespace Dijkstra.NET.Graph
         /// </summary>
         /// <param name="nodeEdgeKey">edge key</param>
         /// <returns>TEdgeCustom</returns>
-        public TEdgeCustom GetEdgeCustom(int nodeEdgeKey)
+        public TEdgeCustom GetFirstEdgeCustom(int nodeEdgeKey)
         {
-            return _edges.FirstOrDefault(c => c.Node.Key == nodeEdgeKey).Item;
+            return _edges.First(c => c.Node.Key == nodeEdgeKey).Item;
         }
       
 
