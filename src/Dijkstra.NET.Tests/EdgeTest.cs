@@ -111,8 +111,8 @@ namespace Dijkstra.NET.Tests
             g.Connect(1, 3, 1, "Second");
 
             var node = g >> 1;
-            var first = node.GetEdgeCustom(2);
-            var second = node.GetEdgeCustom(3);
+            var first = node.GetFirstEdgeCustom(2);
+            var second = node.GetFirstEdgeCustom(3);
 
 
             bool act = first == "First" && second == "Second";
