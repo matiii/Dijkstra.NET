@@ -98,5 +98,26 @@ namespace Dijkstra.NET.Tests
             Assert.False(act);
             Assert.False(act2);
         }
+
+        [Fact]
+        public void Edges_Get_TEdgeCustom_Should_Work()
+        {
+            var g = new Graph<int, string>();
+            g.AddNode(1);
+            g.AddNode(2);
+            g.AddNode(3);
+
+            g.Connect(1, 2, 1, "First");
+            g.Connect(1, 3, 1, "Second");
+
+            var node = g >> 1;
+            var first = node.GetEdgeCustom(2);
+            var second = node.GetEdgeCustom(3);
+
+
+            bool act = first == "First" && second == "Second";
+
+            Assert.True(act);
+        }
     }
 }
