@@ -1,4 +1,6 @@
 ﻿using Dijkstra.NET.Graph;
+using Dijkstra.NET.ShortestPath;
+using System.Linq;
 using Xunit;
 
 namespace Dijkstra.NET.Tests
@@ -119,5 +121,32 @@ namespace Dijkstra.NET.Tests
 
             Assert.True(act);
         }
+        [Fact]
+        public void Edges_Get_Full_Path_Custom()
+        {
+            var g = new Graph<int, string>();
+            g.AddNode(1);
+            g.AddNode(2);
+            g.AddNode(3);
+
+            g.Connect(1, 2, 1, "First");
+            g.Connect(2, 3, 1, "Second");
+
+            var path = g.Dijkstra(1, 3);
+            var pathCustom = path.GetPathEdgesCustom(g);
+            var pathCustomReversed = path.GetReversedPathEdgesCustom(g);
+                       
+            bool act = pathCustom.Count() == 2;
+            bool act2 = pathCustomReversed.Count() == 2;
+            bool act3 = pathCustom.First() == "First";
+            bool act4 = pathCustomReversed.First() == "Second";
+
+            Assert.True(act);
+            Assert.True(act2);
+            Assert.True(act3);
+            Assert.True(act3);
+
+        }
+
     }
 }

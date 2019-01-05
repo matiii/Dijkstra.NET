@@ -9,9 +9,10 @@ namespace Dijkstra.Net40
         {
             var graph = new Graph<int, string>() + 1 + 2;
 
-            bool connected = graph >> 1 >> 2 >> 5 ^ "edge information"; 
+            bool connected = graph >> 1 >> 2 >> 5 ^ "edge information";
 
             var immutablePath = graph.Dijkstra(1, 2);
+            var immutablePathDescriptions = immutablePath.GetPathEdgesCustom(graph);
         }
     }
 }

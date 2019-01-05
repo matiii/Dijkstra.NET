@@ -59,8 +59,7 @@ namespace Dijkstra.NET.Graph
         public TEdgeCustom GetFirstEdgeCustom(int nodeEdgeKey)
         {
             return Edges.First(c => c.Node.Key == nodeEdgeKey).Item;
-        }
-      
+        }      
 
         internal void AddEdge(in Edge<T, TEdgeCustom> edge)
         {
