@@ -35,7 +35,7 @@ namespace Dijkstra.NET.ShortestPath
                     continue;
                 }
 
-                graph[u].EachEdge((node, cost) =>
+                graph[u]((node, cost) =>
                 {
                     if (Distance(node) > Distance(u) + cost)
                     {

@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using Dijkstra.NET.Graph.Exceptions;
 using Dijkstra.NET.PageRank;
 using Dijkstra.NET.ShortestPath;
 
 namespace Dijkstra.NET.Graph
 {
-    public class Node<T, TEdgeCustom>: IPageRank, IDijkstra, INode<T, TEdgeCustom> where TEdgeCustom: IEquatable<TEdgeCustom>
+    public class Node<T, TEdgeCustom>: INode<T, TEdgeCustom> where TEdgeCustom: IEquatable<TEdgeCustom>
     {
         private readonly HashSet<Node<T,TEdgeCustom>> _parents = new HashSet<Node<T, TEdgeCustom>>();
-        private readonly HashSet<uint> _children = new HashSet<uint>();
         private Edge<T, TEdgeCustom>[] _edges;
 
         internal Node(uint key, T item, Graph<T, TEdgeCustom> graph)
@@ -29,20 +30,38 @@ namespace Dijkstra.NET.Graph
         {
             return new EdgeTemp<T, TEdgeCustom>(nodeFrom.Key, (uint) nodeTo, nodeFrom.Graph);
         }
-        
+
         public uint Key { get; }
 
         public T Item { get; }
 
         public int EdgesCount { get; internal set; }
-        
-        public int NumberOfEdges => _children.Count;
 
-        public IEnumerable<IPageRank> Parents => _parents;
+        public IEnumerable<Node<T, TEdgeCustom>> Parents => _parents;
+
+        /// <summary>
+        /// Get custom info from node edges by node key
+        /// </summary>
+        /// <param name="nodeKey">Node key</param>
+        /// <returns>TEdgeCustom</returns>
+        public TEdgeCustom GetFirstEdgeCustom(uint nodeKey)
+        {
+            for (int i = 0; i < EdgesCount; i++)
+            {
+                ref Edge<T, TEdgeCustom> e = ref _edges[i];
+
+                if (e.Node.Key == nodeKey)
+                {
+                    return e.Item;
+                }
+            }
+
+            throw new EdgeNotFoundException(nodeKey);
+        }
 
         internal Graph<T, TEdgeCustom> Graph { get; }
-        
-        public void EachEdge(Edge edge)
+
+        internal void EachEdge(Edge edge)
         {
             for (int i = 0; i < EdgesCount; i++)
             {
@@ -51,7 +70,7 @@ namespace Dijkstra.NET.Graph
                 edge(e.Node.Key, e.Cost);
             }
         }
-        
+
         internal void AddEdge(in Edge<T, TEdgeCustom> edge)
         {
             if (_edges.Length == EdgesCount)
@@ -74,7 +93,6 @@ namespace Dijkstra.NET.Graph
 
             _edges[EdgesCount] = edge;
             EdgesCount++;
-            _children.Add(edge.Node.Key);
         }
 
         internal void AddParent(Node<T, TEdgeCustom> parent)
@@ -87,6 +105,14 @@ namespace Dijkstra.NET.Graph
             return Key.GetHashCode();
         }
 
+        public IEnumerator<Edge<T, TEdgeCustom>> GetEnumerator()
+        {
+            for (int i = 0; i < EdgesCount; i++)
+            {
+                yield return _edges[i];
+            }
+        }
+
         public override bool Equals(object obj)
         {
             var node = obj as INode;
@@ -97,6 +123,11 @@ namespace Dijkstra.NET.Graph
         public override string ToString()
         {
             return $"[{Key}({Item?.ToString()})]";
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

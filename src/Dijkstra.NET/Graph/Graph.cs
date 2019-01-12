@@ -33,7 +33,7 @@ namespace Dijkstra.NET.Graph
         {
             return (Node<T, TEdgeCustom>) graph[(uint)node];
         }
-        
+
         /// <summary>
         /// Add node to graph
         /// </summary>
@@ -48,6 +48,7 @@ namespace Dijkstra.NET.Graph
 
         /// <summary>
         /// Connect node from with node to
+        /// (from)-[cost, custom]->(to)
         /// </summary>
         /// <param name="from">First node</param>
         /// <param name="to">Second node</param>
@@ -61,14 +62,12 @@ namespace Dijkstra.NET.Graph
 
             Node<T,TEdgeCustom> nodeFrom = _nodes[from];
             Node<T, TEdgeCustom> nodeTo = _nodes[to];
-            
+
             nodeTo.AddParent(nodeFrom);
             nodeFrom.AddEdge(new Edge<T, TEdgeCustom>(nodeTo, cost, custom));
 
             return true;
         }
-
-        IEnumerator<IPageRank> IEnumerable<IPageRank>.GetEnumerator() => _nodes.Select(x => x.Value).GetEnumerator();
 
         public IEnumerator<INode<T, TEdgeCustom>> GetEnumerator() => _nodes.Select(x => x.Value).GetEnumerator();
 
@@ -78,15 +77,23 @@ namespace Dijkstra.NET.Graph
 
         public int NodesCount => _nodes.Count;
 
-        IPageRank IPageRankGraph.this[uint node] => _nodes[node];
+        public int EdgesCount(uint node) => _nodes[node].EdgesCount;
 
-        IDijkstra IDijkstraGraph.this[uint node] => _nodes[node];
+        public IEnumerable<uint> Parents(uint node) => _nodes[node].Parents.Select(x => x.Key);
+
+        IEnumerator<uint> IEnumerable<uint>.GetEnumerator()
+        {
+            foreach (var node in _nodes)
+            {
+                yield return node.Key;
+            }
+        }
 
         public override string ToString()
         {
             return $"Graph({_nodes.Count})";
         }
-        
+
         protected void AddNode(uint key, T item)
         {
             if (_nodes.ContainsKey(key))
@@ -94,5 +101,7 @@ namespace Dijkstra.NET.Graph
 
             _nodes.Add(key, new Node<T, TEdgeCustom>(key, item, this));
         }
+
+        Action<Edge> IDijkstraGraph.this[uint node] => _nodes[node].EachEdge;
     }
 }
