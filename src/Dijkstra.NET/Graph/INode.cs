@@ -7,7 +7,7 @@ namespace Dijkstra.NET.Graph
     {
         uint Key { get; }
     }
-    
+
     public interface INode<T, TEdgeCustom> : INode, IEnumerable<Edge<T, TEdgeCustom>> where TEdgeCustom : IEquatable<TEdgeCustom>
     {
         T Item { get; }

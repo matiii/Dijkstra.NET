@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Dijkstra.NET.Graph.Exceptions;
-using Dijkstra.NET.PageRank;
 using Dijkstra.NET.ShortestPath;
 
 namespace Dijkstra.NET.Graph
