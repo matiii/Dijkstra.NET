@@ -5,13 +5,13 @@ namespace Dijkstra.NET.Tests
 {
     public class EdgeTest
     {
-        
+
         [Fact]
         public void Two_Edges_Should_Be_Equal()
         {
             var g = new Graph<string, int>() + "node1";
             var n = g >> 1;
-            
+
             var a = new Edge<string, int>(n, 1, 1);
             var b = new Edge<string, int>(n,1, 1);
 
@@ -25,7 +25,7 @@ namespace Dijkstra.NET.Tests
         {
             var g = new Graph<string, string>() + "node1";
             var n = g >> 1;
-            
+
             var a = new Edge<string, string>(n, 1, null);
             var b = new Edge<string, string>(n,1, null);
 
@@ -39,7 +39,7 @@ namespace Dijkstra.NET.Tests
         {
             var g = new Graph<string, string>() + "node1";
             var n = g >> 1;
-            
+
             var a = new Edge<string, string>(n, 1, null);
             var b = new Edge<string, string>(n,1, "a");
 
@@ -55,7 +55,7 @@ namespace Dijkstra.NET.Tests
         {
             var g = new Graph<string, string>() + "node1";
             var n = g >> 1;
-            
+
             var a = new Edge<string, string>(n, 1, "b");
             var b = new Edge<string, string>(n,1, "a");
 
@@ -71,7 +71,7 @@ namespace Dijkstra.NET.Tests
         {
             var g = new Graph<string, string>() + "node1";
             var n = g >> 1;
-            
+
             var a = new Edge<string, string>(n, 3, "a");
             var b = new Edge<string, string>(n,1, "a");
 
@@ -88,7 +88,7 @@ namespace Dijkstra.NET.Tests
             var g = new Graph<string, string>() + "node1" + "node2";
             var n1 = g >> 1;
             var n2 = g >> 2;
-            
+
             var a = new Edge<string, string>(n1, 1, "a");
             var b = new Edge<string, string>(n2,1, "a");
 
@@ -113,7 +113,6 @@ namespace Dijkstra.NET.Tests
             var node = g >> 1;
             var first = node.GetFirstEdgeCustom(2);
             var second = node.GetFirstEdgeCustom(3);
-
 
             bool act = first == "First" && second == "Second";
 

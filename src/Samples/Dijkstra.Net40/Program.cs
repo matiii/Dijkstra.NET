@@ -1,4 +1,5 @@
-﻿using Dijkstra.NET.Graph;
+﻿using System;
+using Dijkstra.NET.Graph;
 using Dijkstra.NET.ShortestPath;
 
 namespace Dijkstra.Net40
@@ -12,6 +13,11 @@ namespace Dijkstra.Net40
             bool connected = graph >> 1 >> 2 >> 5 ^ "edge information"; 
 
             var immutablePath = graph.Dijkstra(1, 2);
+
+            foreach (var edge in graph >> 1)
+            {
+                Console.WriteLine(edge.Item);
+            }
         }
     }
 }

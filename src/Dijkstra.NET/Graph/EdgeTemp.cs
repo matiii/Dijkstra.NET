@@ -2,7 +2,7 @@ using System;
 
 namespace Dijkstra.NET.Graph
 {
-    public struct EdgeTemp<T, TCustom> where TCustom: IEquatable<TCustom>
+    public readonly struct EdgeTemp<T, TCustom> where TCustom: IEquatable<TCustom>
     {
         internal EdgeTemp(uint nodeFrom, uint nodeTo, Graph<T, TCustom> graph)
         {
@@ -19,7 +19,7 @@ namespace Dijkstra.NET.Graph
             Graph = graph;
             Cost = cost;
         }
-        
+
         /// <summary>
         /// Define cost of edge
         /// </summary>
@@ -30,7 +30,7 @@ namespace Dijkstra.NET.Graph
         {
             return new EdgeTemp<T, TCustom>(edge.NodeFrom, edge.NodeTo, edge.Graph, cost);
         }
-        
+
         /// <summary>
         /// Create edge between two nodes
         /// </summary>
@@ -43,16 +43,16 @@ namespace Dijkstra.NET.Graph
             {
                 throw new InvalidOperationException("Cost of edge is not defined. Use >> operator to define it.");
             }
-            
+
             return edge.Graph.Connect(edge.NodeFrom, edge.NodeTo, edge.Cost, edgeCustom);
         }
-        
-        public uint NodeFrom { get; }
 
-        public uint NodeTo { get; }
-        
-        public Graph<T, TCustom> Graph { get; }
-        
-        public int Cost { get; }
+        internal uint NodeFrom { get; }
+
+        internal uint NodeTo { get; }
+
+        internal Graph<T, TCustom> Graph { get; }
+
+        internal int Cost { get; }
     }
 }

@@ -1,7 +1,9 @@
+using System;
+
 namespace Dijkstra.NET.ShortestPath
 {
     public interface IDijkstraGraph
     {
-        IDijkstra this[uint node] { get; }
+        Action<Edge> this[uint node] { get; }
     }
 }

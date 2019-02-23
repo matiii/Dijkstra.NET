@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Dijkstra.NET.Graph
 {
@@ -6,10 +7,9 @@ namespace Dijkstra.NET.Graph
     {
         uint Key { get; }
     }
-    
-    public interface INode<T, TEdgeCustom> : INode where TEdgeCustom : IEquatable<TEdgeCustom>
+
+    public interface INode<T, TEdgeCustom> : INode, IEnumerable<Edge<T, TEdgeCustom>> where TEdgeCustom : IEquatable<TEdgeCustom>
     {
         T Item { get; }
-        TEdgeCustom GetFirstEdgeCustom(int nodeEdgeKey);
     }
 }

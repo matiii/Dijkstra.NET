@@ -40,7 +40,7 @@ namespace Dijkstra.NET.Benchmark
         [Benchmark]
         public double PageRankExtensionBenchmark()
         {
-            var result = Graph.CalculatePageRank();
+            var result = Graph.PageRank();
 
             return result[BenchmarkBase.First];
         }
