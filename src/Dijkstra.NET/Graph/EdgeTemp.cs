@@ -47,12 +47,12 @@ namespace Dijkstra.NET.Graph
             return edge.Graph.Connect(edge.NodeFrom, edge.NodeTo, edge.Cost, edgeCustom);
         }
 
-        public uint NodeFrom { get; }
+        internal uint NodeFrom { get; }
 
-        public uint NodeTo { get; }
+        internal uint NodeTo { get; }
 
-        public Graph<T, TCustom> Graph { get; }
+        internal Graph<T, TCustom> Graph { get; }
 
-        public int Cost { get; }
+        internal int Cost { get; }
     }
 }

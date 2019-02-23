@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Dijkstra.NET.Extensions;
 using Dijkstra.NET.PageRank;
 using Dijkstra.NET.ShortestPath;
@@ -23,7 +24,22 @@ namespace Dijkstra.NET.Graph.Simple
         /// <returns>Temporary edge</returns>
         public static EdgeTemp operator >>(Graph graph, int node)
         {
-            return new EdgeTemp();
+            return new EdgeTemp(graph, (uint)node);
+        }
+
+        /// <summary>
+        /// Add nodes to graph
+        /// </summary>
+        /// <param name="graph">Graph</param>
+        /// <param name="numberOfNodes">Number of nodes</param>
+        /// <returns></returns>
+        public static Graph operator +(Graph graph, int numberOfNodes)
+        {
+            Enumerable
+                .Range(0, numberOfNodes)
+                .Each(_ => graph.AddNode());
+
+            return graph;
         }
 
         /// <summary>
