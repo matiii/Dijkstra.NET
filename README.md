@@ -1,4 +1,4 @@
-# Dijkstra.NET [![NuGet Version](https://img.shields.io/badge/Dijkstra.NET-1.2.1-blue.svg)](https://www.nuget.org/packages/Dijkstra.NET)
+# Dijkstra.NET [![NuGet Version](https://img.shields.io/badge/Dijkstra.NET-1.2.1-blue.svg)](https://www.nuget.org/packages/Dijkstra.NET)  [![Build Status](https://travis-ci.com/matiii/Dijkstra.NET.svg?branch=master)](https://travis-ci.com/matiii/Dijkstra.NET)
 
 Dijkstra algorithm which use priority queue thus complexity is equal O(ElogV) where E is number of edges and V is number of vertices. Used data structures are based on interfaces so you can implement your own or reused present. Simply example below. More information about algorithm you can find on [Wikipedia](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm).
 
