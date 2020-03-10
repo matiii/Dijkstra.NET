@@ -18,4 +18,4 @@ jobs:
       with:
         dotnet-version: 3.1.101
     - name: Build with dotnet
-      run: cd src && dotnet build --configuration Release --framework netstandard1.3
+      run: cd src && dotnet build --configuration Release --framework netstandard1.3 --runtime linux-x64
