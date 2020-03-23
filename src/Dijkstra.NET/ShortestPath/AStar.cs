@@ -11,7 +11,7 @@ namespace Dijkstra.NET.ShortestPath
             var path = new Dictionary<uint, uint>();
             var distance = new Dictionary<uint, int> {[from] = 0};
             var d = new Dictionary<uint, int> {[from] = 0};
-            var q = new SortedSet<uint>(new[] {from}, new NodeComparer(distance, heuristic));
+            var q = new SortedSet<uint>(new[] {from}, new HeuristicNodeComparer(distance, heuristic));
             var current = new HashSet<uint>();
 
             int Distance(uint key)
