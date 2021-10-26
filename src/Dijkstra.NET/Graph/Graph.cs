@@ -69,6 +69,16 @@ namespace Dijkstra.NET.Graph
             return true;
         }
 
+        public bool UpdateCost(uint from, uint to, TEdgeCustom custom, int newCost)
+        {
+            if (!_nodes.ContainsKey(from) || !_nodes.ContainsKey(to))
+                return false;
+
+            Node<T, TEdgeCustom> nodeFrom = _nodes[from];
+            Node<T, TEdgeCustom> nodeTo = _nodes[to];
+            return nodeFrom.UpdateEdgeCost(new Edge<T, TEdgeCustom>(nodeTo, newCost, custom));
+        }
+
         public IEnumerator<INode<T, TEdgeCustom>> GetEnumerator() => _nodes.Select(x => x.Value).GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

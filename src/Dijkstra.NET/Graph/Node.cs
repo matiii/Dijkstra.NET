@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Dijkstra.NET.Graph.Exceptions;
 using Dijkstra.NET.ShortestPath;
 
@@ -92,6 +93,20 @@ namespace Dijkstra.NET.Graph
 
             _edges[EdgesCount] = edge;
             EdgesCount++;
+        }
+
+        internal bool UpdateEdgeCost(in Edge<T, TEdgeCustom> edge)
+        {
+            for(int i = 0; i < _edges.Length; i++)
+            {
+                if(_edges[i].Item != null && _edges[i].Item.Equals(edge.Item))
+                {
+                    _edges[i] = edge;
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         internal void AddParent(Node<T, TEdgeCustom> parent)
