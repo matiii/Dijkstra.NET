@@ -94,6 +94,20 @@ namespace Dijkstra.NET.Graph
             EdgesCount++;
         }
 
+        internal bool UpdateEdgeCost(in Edge<T, TEdgeCustom> edge)
+        {
+            for(int i = 0; i < _edges.Length; i++)
+            {
+                if(_edges[i].Item != null && _edges[i].Item.Equals(edge.Item))
+                {
+                    _edges[i] = edge;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         internal void AddParent(Node<T, TEdgeCustom> parent)
         {
             _parents.Add(parent);
